@@ -56,10 +56,12 @@
         const root = new FileNode('/', true, '/');
         const picturesFolder = new FileNode('Pictures', true, '/Pictures');
         const documentsFolder = new FileNode('Documents', true, '/Documents');
-        const lupinImage = new FileNode('lupin.jpg', false, 'https://github.com/wanglrebe/wanglrebe.github.io/blob/main/Pictures/lupin.jpg');
+        const lupinImage = new FileNode('lupin.jpg', false, 'https://wanglrebe.github.io/Pictures/lupin.jpg');
+        const aboutPage = new FileNode('about.html', false, 'https://wanglrebe.github.io/Documents/about.html');
         root.addChild(picturesFolder);
         root.addChild(documentsFolder);
         picturesFolder.addChild(lupinImage);
+        documentsFolder.addChild(aboutPage);
 
         const terminal = document.getElementById('terminal');
         const input = document.getElementById('commandInput');
