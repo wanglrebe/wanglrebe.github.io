@@ -56,7 +56,7 @@
         const root = new FileNode('/', true, '/');
         const picturesFolder = new FileNode('Pictures', true, '/Pictures');
         const documentsFolder = new FileNode('Documents', true, '/Documents');
-        const lupinImage = new FileNode('lupin.jpg', false, 'https://github.com/wanglrebe/wanglrebe.github.io/blob/main/images/lupin.jpg');
+        const lupinImage = new FileNode('lupin.jpg', false, 'https://github.com/wanglrebe/wanglrebe.github.io/blob/main/Pictures/lupin.jpg');
         root.addChild(picturesFolder);
         root.addChild(documentsFolder);
         picturesFolder.addChild(lupinImage);
@@ -160,8 +160,13 @@
 
         function changeDirectory(directoryName) {
             if (directoryName === '..') {
-                directoryStack.pop();
-                currentDirectory = directoryStack[directoryStack.length - 1];
+                if (currentDirectory === root) {
+                    terminal.innerHTML += `<br>Error: Already at root directory`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                } else {
+                    directoryStack.pop();
+                    currentDirectory = directoryStack[directoryStack.length - 1];
+                }
             } else {
                 const foundChild = currentDirectory.children.find(child => child.name === directoryName);
                 if (foundChild && foundChild.isDirectory) {
