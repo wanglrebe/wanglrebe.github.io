@@ -28,6 +28,11 @@
             outline: none;
             font-family: monospace;
         }
+        a {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -35,6 +40,27 @@
     <div id="prompt"><span id="username"></span><span id="promptSymbol">$</span> </div>
     <input type="text" id="commandInput" autocomplete="off">
     <script>
+        class FileNode {
+            constructor(name, isDirectory, path) {
+                this.name = name;
+                this.isDirectory = isDirectory;
+                this.path = path;
+                this.children = [];
+            }
+
+            addChild(child) {
+                this.children.push(child);
+            }
+        }
+
+        const root = new FileNode('/', true, '/');
+        const picturesFolder = new FileNode('Pictures', true, '/Pictures');
+        const documentsFolder = new FileNode('Documents', true, '/Documents');
+        const lupinImage = new FileNode('lupin.jpg', false, 'https://github.com/wanglrebe/wanglrebe.github.io/blob/main/images/lupin.jpg');
+        root.addChild(picturesFolder);
+        root.addChild(documentsFolder);
+        picturesFolder.addChild(lupinImage);
+
         const terminal = document.getElementById('terminal');
         const input = document.getElementById('commandInput');
         const prompt = document.getElementById('prompt');
@@ -43,6 +69,8 @@
         const history = [];
         let historyIndex = -1;
         let superUser = false;
+        let currentDirectory = root;
+        const directoryStack = [root];
 
         function printWelcomeMessage() {
             const date = new Date();
@@ -65,6 +93,10 @@
                 printCurrentTime();
             } else if (command === 'date') {
                 printCurrentDate();
+            } else if (command === 'ls') {
+                listFiles();
+            } else if (command.startsWith('cd ')) {
+                changeDirectory(command.slice(3));
             } else if (command === 'su') {
                 requestPassword();
             } else if (command === 'exit') {
@@ -92,6 +124,8 @@
             terminal.innerHTML += '<br>- help: Print this list of available commands';
             terminal.innerHTML += '<br>- time: Display the current time';
             terminal.innerHTML += '<br>- date: Display the current date';
+            terminal.innerHTML += '<br>- ls: List files and directories in the current directory';
+            terminal.innerHTML += '<br>- cd [directory]: Change directory or open external link';
             terminal.innerHTML += '<br>- su: Switch to super user mode';
             terminal.innerHTML += '<br>- exit: Exit super user mode (if applicable)';
             // Add more commands here if needed
@@ -110,6 +144,35 @@
             const dateString = date.toLocaleDateString();
             terminal.innerHTML += `<br>Current date: ${dateString}`;
             terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function listFiles() {
+            terminal.innerHTML += `<br>Files and directories in ${currentDirectory.name}:`;
+            currentDirectory.children.forEach(child => {
+                if (child.isDirectory) {
+                    terminal.innerHTML += `<br>- ${child.name}`;
+                } else {
+                    terminal.innerHTML += `<br>- <a href="${child.path}" target="_blank">${child.name}</a>`;
+                }
+            });
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function changeDirectory(directoryName) {
+            if (directoryName === '..') {
+                directoryStack.pop();
+                currentDirectory = directoryStack[directoryStack.length - 1];
+            } else {
+                const foundChild = currentDirectory.children.find(child => child.name === directoryName);
+                if (foundChild && foundChild.isDirectory) {
+                    directoryStack.push(foundChild);
+                    currentDirectory = foundChild;
+                } else {
+                    terminal.innerHTML += `<br>${directoryName}: No such directory`;
+                    terminal.scrollTop = terminal.scrollHeight;
+                }
+            }
+            listFiles();
         }
 
         function requestPassword() {

@@ -63,6 +63,8 @@
                 printAvailableCommands();
             } else if (command === 'time') {
                 printCurrentTime();
+            } else if (command === 'date') {
+                printCurrentDate();
             } else if (command === 'su') {
                 requestPassword();
             } else if (command === 'exit') {
@@ -89,6 +91,7 @@
             terminal.innerHTML += '<br><br>Available commands:';
             terminal.innerHTML += '<br>- help: Print this list of available commands';
             terminal.innerHTML += '<br>- time: Display the current time';
+            terminal.innerHTML += '<br>- date: Display the current date';
             terminal.innerHTML += '<br>- su: Switch to super user mode';
             terminal.innerHTML += '<br>- exit: Exit super user mode (if applicable)';
             // Add more commands here if needed
@@ -99,6 +102,13 @@
             const date = new Date();
             const timeString = date.toLocaleTimeString();
             terminal.innerHTML += `<br>Current time: ${timeString}`;
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function printCurrentDate() {
+            const date = new Date();
+            const dateString = date.toLocaleDateString();
+            terminal.innerHTML += `<br>Current date: ${dateString}`;
             terminal.scrollTop = terminal.scrollHeight;
         }
 
