@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jupyter Timeout Controller Installation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .bookmark {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .bookmark:hover {
+            background: #0056b3;
+        }
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .language-switch {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        [lang="zh"] {
+            display: none;
+        }
+        .zh [lang="en"] {
+            display: none;
+        }
+        .zh [lang="zh"] {
+            display: block;
+        }
+        .steps {
+            margin: 20px 0;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <a href="#" onclick="toggleLanguage(); return false;" id="langToggle">切换到中文</a>
+    </div>
+
+    <div lang="en">
+        <h1>Jupyter Timeout Controller Installation</h1>
+        
+        <div class="note">
+            <strong>Note:</strong> To install the bookmark, drag the button below to your bookmarks bar.
+            If you can't drag it, follow the manual installation steps below.
+        </div>
+
+        <div class="container">
+            <h3>Option 1: One-Click Installation</h3>
+            <p>Drag this button to your bookmarks bar:</p>
+            <a class="bookmark" href="javascript:(function(){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/wanglrebe/Jupyter-alive@main/timeout-controller.min.js';document.body.appendChild(s)})();">Jupyter Timeout Control</a>
+        </div>
+
+        <div class="container">
+            <h3>Option 2: Manual Installation</h3>
+            <div class="steps">
+                <div class="step">1. Right-click on your browser's bookmark bar</div>
+                <div class="step">2. Select "Add bookmark" or "New bookmark"</div>
+                <div class="step">3. Enter "Jupyter Timeout Control" as the name</div>
+                <div class="step">4. Copy and paste the following code as the URL:</div>
+                <code class="step">javascript:(function(){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/wanglrebe/Jupyter-alive@main/timeout-controller.min.js';document.body.appendChild(s)})();</code>
+            </div>
+        </div>
+    </div>
+
+    <div lang="zh">
+        <h1>Jupyter 超时控制器安装</h1>
+        
+        <div class="note">
+            <strong>注意：</strong> 安装书签时，将下方按钮拖动到书签栏即可。
+            如果无法拖动，请按照下方的手动安装步骤操作。
+        </div>
+
+        <div class="container">
+            <h3>方式一：一键安装</h3>
+            <p>将此按钮拖动到书签栏：</p>
+            <a class="bookmark" href="javascript:(function(){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/wanglrebe/Jupyter-alive@main/timeout-controller.min.js';document.body.appendChild(s)})();">Jupyter 超时控制</a>
+        </div>
+
+        <div class="container">
+            <h3>方式二：手动安装</h3>
+            <div class="steps">
+                <div class="step">1. 右键点击浏览器的书签栏</div>
+                <div class="step">2. 选择"添加书签"或"新建书签"</div>
+                <div class="step">3. 将名称设置为"Jupyter 超时控制"</div>
+                <div class="step">4. 将以下代码复制粘贴为网址：</div>
+                <code class="step">javascript:(function(){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/wanglrebe/Jupyter-alive@main/timeout-controller.min.js';document.body.appendChild(s)})();</code>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleLanguage() {
+            const body = document.body;
+            const toggle = document.getElementById('langToggle');
+            if (body.classList.contains('zh')) {
+                body.classList.remove('zh');
+                toggle.textContent = '切换到中文';
+            } else {
+                body.classList.add('zh');
+                toggle.textContent = 'Switch to English';
+            }
+        }
+    </script>
+</body>
+</html>
