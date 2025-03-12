@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Results - Human Centered Security Project</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            margin-top: 40px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 0;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        .btn-success {
+            background-color: #2ecc71;
+        }
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        .results-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .feedback-form {
+            margin-top: 20px;
+        }
+        .feedback-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .feedback-form select, .feedback-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .result-stat {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .copy-btn {
+            margin-top: 10px;
+        }
+        .result-success {
+            color: #2ecc71;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .result-fail {
+            color: #e74c3c;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .icon {
+            font-size: 24px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Authentication Results</h1>
+            <p class="description" id="auth-type-desc">Results from your authentication test</p>
+        </header>
+
+        <div class="section">
+            <div id="auth-result"></div>
+            
+            <div class="results-container">
+                <h3><span class="material-icons icon">analytics</span> Experiment Data</h3>
+                <div id="results-data"></div>
+                
+                <button id="copy-results" class="btn copy-btn" onclick="copyResults()">
+                    <span class="material-icons icon">content_copy</span> Copy Results
+                </button>
+                
+                <button id="download-results" class="btn copy-btn" onclick="downloadResults()">
+                    <span class="material-icons icon">download</span> Download Results
+                </button>
+            </div>
+            
+            <div class="feedback-form">
+                <h3><span class="material-icons icon">feedback</span> User Feedback</h3>
+                
+                <label for="difficulty-rating">Difficulty (1-5, 1=Very Easy, 5=Very Difficult):</label>
+                <select id="difficulty-rating">
+                    <option value="1">1 - Very Easy</option>
+                    <option value="2">2 - Easy</option>
+                    <option value="3" selected>3 - Moderate</option>
+                    <option value="4">4 - Difficult</option>
+                    <option value="5">5 - Very Difficult</option>
+                </select>
+                
+                <label for="satisfaction-rating">Satisfaction (1-5, 1=Very Unsatisfied, 5=Very Satisfied):</label>
+                <select id="satisfaction-rating">
+                    <option value="1">1 - Very Unsatisfied</option>
+                    <option value="2">2 - Unsatisfied</option>
+                    <option value="3" selected>3 - Neutral</option>
+                    <option value="4">4 - Satisfied</option>
+                    <option value="5">5 - Very Satisfied</option>
+                </select>
+                
+                <label for="security-rating">Perceived Security (1-5, 1=Very Insecure, 5=Very Secure):</label>
+                <select id="security-rating">
+                    <option value="1">1 - Very Insecure</option>
+                    <option value="2">2 - Somewhat Insecure</option>
+                    <option value="3" selected>3 - Neutral</option>
+                    <option value="4">4 - Somewhat Secure</option>
+                    <option value="5">5 - Very Secure</option>
+                </select>
+                
+                <label for="comments">Other comments or suggestions:</label>
+                <textarea id="comments" rows="4"></textarea>
+                
+                <button class="btn btn-success" onclick="saveFeedback()">
+                    <span class="material-icons icon">save</span> Save Feedback
+                </button>
+            </div>
+            
+            <div class="nav-buttons">
+                <button id="try-other-btn" class="btn">
+                    <span class="material-icons icon">compare_arrows</span> <span id="try-other-text">Try Password Authentication</span>
+                </button>
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                    <span class="material-icons icon">home</span> Back to Home
+                </button>
+            </div>
+        </div>
+
+        <footer>
+            <p>Human Centred Security Course Project | University of Glasgow</p>
+        </footer>
+    </div>
+
+    <script>
+        // Variables
+        let authType = '';
+        let success = false;
+        let userId = '';
+        
+        // Get URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            authType = params.get('auth') || '';
+            success = params.get('success') === 'true';
+            userId = params.get('userId') || getUserId();
+            
+            // Set UI based on auth type
+            if (authType === 'music') {
+                document.getElementById('auth-type-desc').textContent = 'Results from your Music Authentication test';
+                document.getElementById('try-other-text').textContent = 'Try Password Authentication';
+                document.getElementById('try-other-btn').onclick = function() {
+                    window.location.href = 'password.html';
+                };
+            } else if (authType === 'password') {
+                document.getElementById('auth-type-desc').textContent = 'Results from your Password Authentication test';
+                document.getElementById('try-other-text').textContent = 'Try Music Authentication';
+                document.getElementById('try-other-btn').onclick = function() {
+                    window.location.href = 'music.html';
+                };
+            }
+            
+            // Set result display
+            const resultDiv = document.getElementById('auth-result');
+            if (success) {
+                resultDiv.innerHTML = `
+                    <div class="result-success">
+                        <span class="material-icons" style="font-size: 48px;">check_circle</span>
+                        <h3>Authentication Successful!</h3>
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="result-fail">
+                        <span class="material-icons" style="font-size: 48px;">error</span>
+                        <h3>Authentication Failed</h3>
+                    </div>
+                `;
+            }
+        }
+        
+        // Get user ID from localStorage
+        function getUserId() {
+            return localStorage.getItem('userId') || 'unknown_user';
+        }
+        
+        // Load results data
+        function loadResults() {
+            // Get results from localStorage
+            let results = JSON.parse(localStorage.getItem('results')) || {};
+            let testResults = results[userId]?.[authType];
+            
+            if (!testResults) {
+                document.getElementById('results-data').innerHTML = '<p>No results data available.</p>';
+                return;
+            }
+            
+            // Load feedback if available
+            if (testResults.feedback) {
+                document.getElementById('difficulty-rating').value = testResults.feedback.difficulty || 3;
+                document.getElementById('satisfaction-rating').value = testResults.feedback.satisfaction || 3;
+                document.getElementById('security-rating').value = testResults.feedback.security || 3;
+                document.getElementById('comments').value = testResults.feedback.comments || '';
+            }
+            
+            // Display results based on auth type
+            if (authType === 'music') {
+                displayMusicResults(testResults);
+            } else if (authType === 'password') {
+                displayPasswordResults(testResults);
+            }
+        }
+        
+        // Display music authentication results
+        function displayMusicResults(results) {
+            const resultsDataDiv = document.getElementById('results-data');
+            resultsDataDiv.innerHTML = `
+                <div class="result-stat"><strong>User ID:</strong> ${userId}</div>
+                <div class="result-stat"><strong>Authentication Type:</strong> Music Recognition</div>
+                <div class="result-stat"><strong>Result:</strong> ${results.success ? 'Successful' : 'Failed'}</div>
+                <div class="result-stat"><strong>Total Authentication Time:</strong> ${results.totalTime?.toFixed(2)} seconds</div>
+                <div class="result-stat"><strong>Rounds Played:</strong> ${results.totalRounds}</div>
+                <div class="result-stat"><strong>Required Consecutive Correct:</strong> ${results.requiredConsecutive}</div>
+                <div class="result-stat"><strong>Achieved Consecutive Correct:</strong> ${results.achievedConsecutive}</div>
+                <div class="result-stat"><strong>Total Attempts:</strong> ${results.totalAttempts}</div>
+                <div class="result-stat"><strong>Average Attempts per Round:</strong> ${results.avgAttemptsPerRound?.toFixed(2)}</div>
+                <div class="result-stat"><strong>Authentication Mode:</strong> ${results.settings?.endlessMode ? 'Endless' : 'Fixed Rounds'}</div>
+                <div class="result-stat"><strong>Verification Mode:</strong> ${getVerificationModeName(results.settings?.strictMode)}</div>
+                <div class="result-stat"><strong>Audio Segments:</strong> ${results.settings?.randomSegments ? 'Random' : 'Fixed'}</div>
+                <div class="result-stat"><strong>Segment Duration:</strong> ${results.settings?.segmentDuration} seconds</div>
+            `;
+        }
+        
+        // Display password authentication results
+        function displayPasswordResults(results) {
+            const resultsDataDiv = document.getElementById('results-data');
+            resultsDataDiv.innerHTML = `
+                <div class="result-stat"><strong>User ID:</strong> ${userId}</div>
+                <div class="result-stat"><strong>Authentication Type:</strong> Password</div>
+                <div class="result-stat"><strong>Result:</strong> ${results.success ? 'Successful' : 'Failed'}</div>
+                <div class="result-stat"><strong>Total Authentication Time:</strong> ${results.totalTime?.toFixed(2)} seconds</div>
+                <div class="result-stat"><strong>Attempts:</strong> ${results.attempts}</div>
+                <div class="result-stat"><strong>Max Allowed Attempts:</strong> ${results.maxAttempts || 'Unlimited'}</div>
+                <div class="result-stat"><strong>Password Length:</strong> ${results.passwordLength} characters</div>
+            `;
+        }
+        
+        // Get verification mode name
+        function getVerificationModeName(mode) {
+            switch(parseInt(mode)) {
+                case 1: return "Blind Mode";
+                case 2: return "Feedback Mode";
+                case 3: return "Learning Mode";
+                default: return "Unknown";
+            }
+        }
+        
+        // Save feedback
+        function saveFeedback() {
+            const difficulty = document.getElementById('difficulty-rating').value;
+            const satisfaction = document.getElementById('satisfaction-rating').value;
+            const security = document.getElementById('security-rating').value;
+            const comments = document.getElementById('comments').value;
+            
+            // Save to localStorage
+            let results = JSON.parse(localStorage.getItem('results')) || {};
+            if (!results[userId]) {
+                results[userId] = {};
+            }
+            if (!results[userId][authType]) {
+                results[userId][authType] = {};
+            }
+            
+            results[userId][authType].feedback = {
+                difficulty: difficulty,
+                satisfaction: satisfaction,
+                security: security,
+                comments: comments
+            };
+            
+            localStorage.setItem('results', JSON.stringify(results));
+            
+            alert("Feedback saved successfully!");
+        }
+        
+        // Copy results to clipboard
+        function copyResults() {
+            // Get results from localStorage
+            let results = JSON.parse(localStorage.getItem('results')) || {};
+            let testResults = results[userId]?.[authType];
+            
+            if (!testResults) {
+                alert("No results available to copy.");
+                return;
+            }
+            
+            // Create formatted result text
+            let resultText = "";
+            
+            if (authType === 'music') {
+                resultText = formatMusicResults(testResults);
+            } else if (authType === 'password') {
+                resultText = formatPasswordResults(testResults);
+            }
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert("Results copied to clipboard!");
+            }, (err) => {
+                console.error('Could not copy text: ', err);
+                alert("Failed to copy results. Please try the download option instead.");
+            });
+        }
+        
+        // Format music results for text output
+        function formatMusicResults(results) {
+            let resultText = "=== MUSIC AUTHENTICATION RESULTS ===\n\n";
+            resultText += `User ID: ${userId}\n`;
+            resultText += `Date: ${new Date().toLocaleString()}\n\n`;
+            
+            resultText += "=== TEST DATA ===\n";
+            resultText += `Authentication Type: Music Recognition\n`;
+            resultText += `Result: ${results.success ? 'Successful' : 'Failed'}\n`;
+            resultText += `Total Authentication Time: ${results.totalTime?.toFixed(2)} seconds\n`;
+            resultText += `Rounds Played: ${results.totalRounds}\n`;
+            resultText += `Required Consecutive Correct: ${results.requiredConsecutive}\n`;
+            resultText += `Achieved Consecutive Correct: ${results.achievedConsecutive}\n`;
+            resultText += `Total Attempts: ${results.totalAttempts}\n`;
+            resultText += `Average Attempts per Round: ${results.avgAttemptsPerRound?.toFixed(2)}\n\n`;
+            
+            resultText += "=== SETTINGS ===\n";
+            resultText += `Authentication Mode: ${results.settings?.endlessMode ? 'Endless' : 'Fixed Rounds'}\n`;
+            resultText += `Verification Mode: ${getVerificationModeName(results.settings?.strictMode)}\n`;
+            resultText += `Audio Segments: ${results.settings?.randomSegments ? 'Random' : 'Fixed'}\n`;
+            resultText += `Segment Duration: ${results.settings?.segmentDuration} seconds\n\n`;
+            
+            resultText += "=== USER FEEDBACK ===\n";
+            if (results.feedback) {
+                resultText += `Difficulty Rating (1-5): ${results.feedback.difficulty}\n`;
+                resultText += `Satisfaction Rating (1-5): ${results.feedback.satisfaction}\n`;
+                resultText += `Perceived Security Rating (1-5): ${results.feedback.security}\n`;
+                resultText += `Comments: ${results.feedback.comments}\n`;
+            } else {
+                resultText += "No feedback provided.\n";
+            }
+            
+            return resultText;
+        }
+        
+        // Format password results for text output
+        function formatPasswordResults(results) {
+            let resultText = "=== PASSWORD AUTHENTICATION RESULTS ===\n\n";
+            resultText += `User ID: ${userId}\n`;
+            resultText += `Date: ${new Date().toLocaleString()}\n\n`;
+            
+            resultText += "=== TEST DATA ===\n";
+            resultText += `Authentication Type: Password\n`;
+            resultText += `Result: ${results.success ? 'Successful' : 'Failed'}\n`;
+            resultText += `Total Authentication Time: ${results.totalTime?.toFixed(2)} seconds\n`;
+            resultText += `Attempts: ${results.attempts}\n`;
+            resultText += `Max Allowed Attempts: ${results.maxAttempts || 'Unlimited'}\n`;
+            resultText += `Password Length: ${results.passwordLength} characters\n\n`;
+            
+            resultText += "=== USER FEEDBACK ===\n";
+            if (results.feedback) {
+                resultText += `Difficulty Rating (1-5): ${results.feedback.difficulty}\n`;
+                resultText += `Satisfaction Rating (1-5): ${results.feedback.satisfaction}\n`;
+                resultText += `Perceived Security Rating (1-5): ${results.feedback.security}\n`;
+                resultText += `Comments: ${results.feedback.comments}\n`;
+            } else {
+                resultText += "No feedback provided.\n";
+            }
+            
+            return resultText;
+        }
+        
+        // Download results as a text file
+        function downloadResults() {
+            // Get results from localStorage
+            let results = JSON.parse(localStorage.getItem('results')) || {};
+            let testResults = results[userId]?.[authType];
+            
+            if (!testResults) {
+                alert("No results available to download.");
+                return;
+            }
+            
+            // Create formatted result text
+            let resultText = "";
+            
+            if (authType === 'music') {
+                resultText = formatMusicResults(testResults);
+            } else if (authType === 'password') {
+                resultText = formatPasswordResults(testResults);
+            }
+            
+            // Create file and download
+            const blob = new Blob([resultText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${authType}_auth_results_${userId}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            getUrlParams();
+            loadResults();
+        });
+    </script>
+</body>
+</html>

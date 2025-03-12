@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Authentication System - Music Mode</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            margin-top: 40px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 0;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        .btn-success {
+            background-color: #2ecc71;
+        }
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        #setup-section, #test-section, #results-section {
+            display: none;
+        }
+        #intro-section {
+            display: block;
+        }
+        .song-list {
+            list-style: none;
+            padding: 0;
+        }
+        .song-item {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #ecf0f1;
+            border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .song-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .song-option {
+            padding: 10px;
+            text-align: center;
+            background-color: #ecf0f1;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .song-option:hover {
+            background-color: #bdc3c7;
+        }
+        .song-option.selected {
+            background-color: #3498db;
+            color: white;
+        }
+        .results-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .feedback-form {
+            margin-top: 20px;
+        }
+        .feedback-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .feedback-form select, .feedback-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .progress-bar {
+            height: 20px;
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #3498db;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        /* Material Icons */
+        .icon {
+            font-size: 24px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .upload-area {
+            border: 2px dashed #bdc3c7;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-area:hover {
+            border-color: #3498db;
+        }
+        .hidden {
+            display: none;
+        }
+        .validation-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .test-round-info {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .result-stat {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .copy-btn {
+            margin-top: 10px;
+        }
+        .verification-feedback {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .feedback-correct {
+            background-color: #d5f5e3;
+            color: #27ae60;
+        }
+        .feedback-incorrect {
+            background-color: #fadbd8;
+            color: #e74c3c;
+        }
+        .settings-info {
+            background-color: #e8f4f8;
+            border-left: 3px solid #3498db;
+            padding: 10px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+    </style>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Music Authentication System</h1>
+            <p class="description">Authenticate using music recognition</p>
+        </header>
+
+        <!-- Introduction Section -->
+        <div id="intro-section" class="section">
+            <h2>Welcome to Music Authentication</h2>
+            <p>This system uses your ability to recognize familiar music as an authentication method. The experiment has two phases:</p>
+            <ol>
+                <li>Setup Phase: Upload 3-5 music files that you are very familiar with</li>
+                <li>Test Phase: The system will play random segments from your songs, and you need to identify them correctly</li>
+            </ol>
+            <p>The data collected will be used to compare music authentication with traditional password authentication.</p>
+            
+            <div class="settings-info">
+                <h3><span class="material-icons icon">info</span> Current Settings</h3>
+                <div id="current-settings"></div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn" onclick="startSetup()"><span class="material-icons icon">upload</span> Start Setup</button>
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'"><span class="material-icons icon">arrow_back</span> Back to Home</button>
+                <button class="btn btn-secondary" onclick="window.location.href='settings.html'"><span class="material-icons icon">settings</span> Change Settings</button>
+            </div>
+        </div>
+
+        <!-- Setup Section -->
+        <div id="setup-section" class="section">
+            <h2>Setup Your Music Authentication</h2>
+            <p>Please upload 3-5 songs that you are very familiar with. These songs will be used as your "music password".</p>
+            
+            <div class="progress-bar">
+                <div id="setup-progress" class="progress" style="width: 0%"></div>
+            </div>
+            
+            <div class="upload-area" onclick="document.getElementById('audio-upload').click()">
+                <span class="material-icons icon" style="font-size: 48px;">upload_file</span>
+                <p>Click here to upload audio files</p>
+                <p>(MP3, WAV, OGG formats supported)</p>
+            </div>
+            
+            <input type="file" id="audio-upload" accept="audio/*" multiple class="hidden">
+            <p>Uploaded songs: <span id="song-count">0</span>/5</p>
+            <p class="validation-message" id="upload-validation"></p>
+            
+            <ul id="uploaded-songs" class="song-list"></ul>
+            
+            <div class="nav-buttons">
+                <button id="start-test-btn" class="btn" onclick="prepareTest()" disabled><span class="material-icons icon">play_arrow</span> Start Testing</button>
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'"><span class="material-icons icon">cancel</span> Cancel</button>
+            </div>
+        </div>
+
+        <!-- Test Section -->
+        <div id="test-section" class="section">
+            <h2>Music Authentication Test</h2>
+            <div class="test-round-info">
+                <p>Round <span id="current-round">1</span> of <span id="total-rounds">3</span></p>
+                <p>Consecutive correct: <span id="consecutive-correct-count">0</span>/<span id="required-consecutive">3</span></p>
+            </div>
+            
+            <div class="progress-bar">
+                <div id="test-progress" class="progress" style="width: 0%"></div>
+            </div>
+            
+            <p>Listen to the music segment and select the correct song.</p>
+            
+            <div class="nav-buttons">
+                <button id="play-segment" class="btn"><span class="material-icons icon">play_circle</span> Play Segment</button>
+            </div>
+            
+            <div id="verification-feedback" class="verification-feedback" style="display: none;"></div>
+            
+            <div id="song-options" class="song-options"></div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results-section" class="section">
+            <h2>Authentication Results</h2>
+            <div id="auth-result" style="text-align: center; margin: 20px 0;"></div>
+            
+            <div class="results-container">
+                <h3><span class="material-icons icon">analytics</span> Experiment Data</h3>
+                <div id="results-data"></div>
+                
+                <button id="copy-results" class="btn copy-btn" onclick="copyResults()">
+                    <span class="material-icons icon">content_copy</span> Copy Results
+                </button>
+                
+                <button id="download-results" class="btn copy-btn" onclick="downloadResults()">
+                    <span class="material-icons icon">download</span> Download Results
+                </button>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-success" onclick="finishExperiment()"><span class="material-icons icon">check</span> Complete Experiment</button>
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'"><span class="material-icons icon">home</span> Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let songBuffers = [];
+        let songNames = [];
+        let testSongs = [];  // Songs selected for testing
+        let currentRound = 0;
+        let totalRounds = 3;  // Default, will be updated from settings
+        let consecutiveCorrect = 0;
+        let requiredConsecutive = 3;  // Default, will be updated from settings
+        let currentAudioSource = null;
+        let selectedSongIndex = null;
+        let testStartTime = null;
+        let roundStartTime = null;
+        let attemptCounts = []; // Track attempts for each round
+        let roundTimes = [];    // Track time taken for each round
+        let currentSegmentStart = 0; // Store current segment start position
+        let endlessMode = false;
+        let strictMode = 2;
+        let randomSegments = true;
+        let segmentDuration = 1;
+        
+        // Get user ID
+        function getUserId() {
+            return localStorage.getItem('userId') || 'unknown_user';
+        }
+        
+        // Load settings
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('authSettings')) || {};
+            
+            // Set default values if settings don't exist
+            requiredConsecutive = settings.consecutiveCorrect || 3;
+            endlessMode = settings.endlessMode !== undefined ? settings.endlessMode : false;
+            totalRounds = settings.totalRounds || 5;
+            strictMode = settings.strictMode || 2;
+            randomSegments = settings.randomSegments !== undefined ? settings.randomSegments : true;
+            segmentDuration = settings.segmentDuration || 1;
+            
+            // Update UI elements
+            document.getElementById('required-consecutive').textContent = requiredConsecutive;
+            
+            // Display current settings
+            let settingsText = `
+                <p><strong>Authentication Mode:</strong> ${endlessMode ? 'Endless (continue until consecutive correct)' : 'Fixed Rounds (' + totalRounds + ' rounds)'}</p>
+                <p><strong>Required Consecutive Correct:</strong> ${requiredConsecutive}</p>
+                <p><strong>Verification Mode:</strong> ${getVerificationModeName(strictMode)}</p>
+                <p><strong>Audio Segments:</strong> ${randomSegments ? 'Random (different each time)' : 'Fixed (same for each round)'}</p>
+                <p><strong>Segment Duration:</strong> ${segmentDuration} seconds</p>
+            `;
+            
+            document.getElementById('current-settings').innerHTML = settingsText;
+        }
+        
+        // Get verification mode name
+        function getVerificationModeName(mode) {
+            switch(parseInt(mode)) {
+                case 1: return "Blind Mode";
+                case 2: return "Feedback Mode";
+                case 3: return "Learning Mode";
+                default: return "Unknown";
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+        });
+        
+        // Start setup phase
+        function startSetup() {
+            document.getElementById('intro-section').style.display = 'none';
+            document.getElementById('setup-section').style.display = 'block';
+            updateSetupProgress();
+        }
+        
+        // Update setup progress
+        function updateSetupProgress() {
+            const count = songBuffers.length;
+            const progress = Math.min(count / 3 * 100, 100);
+            document.getElementById('setup-progress').style.width = progress + '%';
+            document.getElementById('song-count').textContent = count;
+            
+            // Need at least 3 songs to start testing
+            document.getElementById('start-test-btn').disabled = count < 3;
+            
+            // Validation message
+            const validationMsg = document.getElementById('upload-validation');
+            if (count < 3) {
+                validationMsg.textContent = "Please upload at least 3 songs.";
+            } else if (count > 5) {
+                validationMsg.textContent = "Maximum 5 songs allowed. Please remove some.";
+            } else {
+                validationMsg.textContent = "";
+            }
+        }
+        
+        // Handle audio upload
+        document.getElementById('audio-upload').addEventListener('change', async function(e) {
+            if (songBuffers.length >= 5) {
+                alert("Maximum 5 songs allowed. Please remove some before adding more.");
+                return;
+            }
+            
+            for (let file of e.target.files) {
+                if (songBuffers.length >= 5) break;
+                
+                try {
+                    let arrayBuffer = await file.arrayBuffer();
+                    let audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+                    songBuffers.push(audioBuffer);
+                    songNames.push(file.name);
+                    
+                    // Display uploaded song
+                    let songList = document.getElementById('uploaded-songs');
+                    let songItem = document.createElement('li');
+                    songItem.className = 'song-item';
+                    songItem.innerHTML = `
+                        <span>${file.name}</span>
+                        <button class="btn btn-danger" onclick="removeSong(${songBuffers.length - 1})">
+                            <span class="material-icons">delete</span>
+                        </button>
+                    `;
+                    songList.appendChild(songItem);
+                    
+                    updateSetupProgress();
+                } catch (err) {
+                    console.error("Error processing audio", err);
+                    alert("Could not process audio file: " + file.name);
+                }
+            }
+            
+            // Reset file input to allow selecting the same file again
+            e.target.value = '';
+        });
+        
+        // Remove uploaded song
+        function removeSong(index) {
+            songBuffers.splice(index, 1);
+            songNames.splice(index, 1);
+            
+            // Redraw song list
+            let songList = document.getElementById('uploaded-songs');
+            songList.innerHTML = '';
+            
+            songNames.forEach((name, i) => {
+                let songItem = document.createElement('li');
+                songItem.className = 'song-item';
+                songItem.innerHTML = `
+                    <span>${name}</span>
+                    <button class="btn btn-danger" onclick="removeSong(${i})">
+                        <span class="material-icons">delete</span>
+                    </button>
+                `;
+                songList.appendChild(songItem);
+            });
+            
+            updateSetupProgress();
+        }
+        
+        // Prepare test phase
+        function prepareTest() {
+            if (songBuffers.length < 3) {
+                alert("Please upload at least 3 songs before starting the test.");
+                return;
+            }
+            
+            // Reload settings (in case they changed)
+            loadSettings();
+            
+            // Ensure requiredConsecutive doesn't exceed the number of songs
+            requiredConsecutive = Math.min(requiredConsecutive, songBuffers.length);
+            document.getElementById('required-consecutive').textContent = requiredConsecutive;
+            
+            // Set total rounds
+            if (endlessMode) {
+                // In endless mode, we'll keep going until we get enough consecutive correct
+                totalRounds = 100;  // Set a high number, we'll stop based on consecutive correct
+                document.getElementById('total-rounds').textContent = "∞";
+            } else {
+                // In fixed mode, use the specified total rounds
+                totalRounds = Math.max(totalRounds, requiredConsecutive);
+                document.getElementById('total-rounds').textContent = totalRounds;
+            }
+            
+            // Randomly select initial test songs
+            testSongs = [];
+            
+            // Create a shuffled copy of all song indices
+            let indices = Array.from({length: songBuffers.length}, (_, i) => i);
+            shuffleArray(indices);
+            
+            // Add all indices to testSongs (we'll cycle through them)
+            testSongs = indices;
+            
+            // Initialize attempt counts and round times
+            attemptCounts = Array(totalRounds).fill(0);
+            roundTimes = Array(totalRounds).fill(0);
+            
+            // Reset test state
+            currentRound = 0;
+            consecutiveCorrect = 0;
+            testStartTime = Date.now();
+            
+            // Start the first round
+            startTestRound();
+        }
+        
+        // Start a test round
+        function startTestRound() {
+            document.getElementById('setup-section').style.display = 'none';
+            document.getElementById('test-section').style.display = 'block';
+            
+            // Update round info
+            document.getElementById('current-round').textContent = currentRound + 1;
+            document.getElementById('consecutive-correct-count').textContent = consecutiveCorrect;
+            
+            // Update progress bar
+            let progressValue;
+            if (endlessMode) {
+                // In endless mode, progress is based on consecutive correct
+                progressValue = (consecutiveCorrect / requiredConsecutive) * 100;
+            } else {
+                // In fixed mode, progress is based on rounds completed
+                progressValue = (currentRound / totalRounds) * 100;
+            }
+            document.getElementById('test-progress').style.width = progressValue + '%';
+            
+            // Generate song options (all available songs)
+            let optionsDiv = document.getElementById('song-options');
+            optionsDiv.innerHTML = '';
+            
+            songNames.forEach((name, index) => {
+                let option = document.createElement('div');
+                option.className = 'song-option';
+                option.textContent = name;
+                option.dataset.index = index;
+                option.onclick = function() {
+                    selectSong(index);
+                };
+                optionsDiv.appendChild(option);
+            });
+            
+            // Reset selection
+            selectedSongIndex = null;
+            
+            // Reset play button
+            document.getElementById('play-segment').disabled = false;
+            
+            // Reset verification feedback
+            const feedbackDiv = document.getElementById('verification-feedback');
+            feedbackDiv.style.display = 'none';
+            feedbackDiv.textContent = '';
+            feedbackDiv.className = 'verification-feedback';
+            
+            // Start timing this round
+            roundStartTime = Date.now();
+            
+            // For fixed segments, pre-select a random start position
+            if (!randomSegments) {
+                const currentTestSongIndex = getCurrentTestSongIndex();
+                const buffer = songBuffers[currentTestSongIndex];
+                
+                // Randomly choose segment start position (avoid first and last 10%)
+                const safeZone = buffer.duration * 0.1;
+                const availableDuration = buffer.duration - (2 * safeZone);
+                currentSegmentStart = safeZone + (Math.random() * availableDuration);
+            }
+        }
+        
+        // Get the current test song index
+        function getCurrentTestSongIndex() {
+            // Get the song for the current round (cycling through testSongs if needed)
+            return testSongs[currentRound % testSongs.length];
+        }
+        
+        // Play a segment from the current test song
+        document.getElementById('play-segment').addEventListener('click', function() {
+            // Get the current test song
+            const currentTestSongIndex = getCurrentTestSongIndex();
+            const buffer = songBuffers[currentTestSongIndex];
+            
+            // Stop any playing audio
+            if (currentAudioSource) {
+                currentAudioSource.stop();
+            }
+            
+            // Determine segment start position
+            let startOffset;
+            if (randomSegments) {
+                // Random segment each time
+                const safeZone = buffer.duration * 0.1;
+                const availableDuration = buffer.duration - (2 * safeZone);
+                startOffset = safeZone + (Math.random() * availableDuration);
+            } else {
+                // Use fixed segment for this round
+                startOffset = currentSegmentStart;
+            }
+            
+            // Create audio source
+            currentAudioSource = audioContext.createBufferSource();
+            currentAudioSource.buffer = buffer;
+            currentAudioSource.connect(audioContext.destination);
+            
+            // Play segment
+            currentAudioSource.start(0, startOffset, segmentDuration);
+            
+            // Count this as an attempt if it's the first play in this round
+            if (attemptCounts[currentRound] === 0) {
+                attemptCounts[currentRound] = 1;
+            } else {
+                // Increment attempt count for replays
+                attemptCounts[currentRound]++;
+            }
+        });
+        
+        // Select a song
+        function selectSong(index) {
+            selectedSongIndex = index;
+            
+            // Highlight selected option
+            const options = document.querySelectorAll('.song-option');
+            options.forEach(option => {
+                if (parseInt(option.dataset.index) === index) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // Process selection immediately (removed verify button)
+            verifySelection();
+        }
+        
+        // Verify song selection
+        function verifySelection() {
+            if (selectedSongIndex === null) {
+                return;
+            }
+            
+            // Get the current test song
+            const currentTestSongIndex = getCurrentTestSongIndex();
+            
+            // Calculate time taken for this round
+            const roundEndTime = Date.now();
+            roundTimes[currentRound] = (roundEndTime - roundStartTime) / 1000;
+            
+            // Check if selection is correct
+            const isCorrect = (selectedSongIndex === currentTestSongIndex);
+            
+            // Handle based on verification mode
+            const feedbackDiv = document.getElementById('verification-feedback');
+            
+            if (isCorrect) {
+                // Correct selection
+                if (consecutiveCorrect < requiredConsecutive) {
+                    // Only increment if we haven't already reached the target
+                    consecutiveCorrect++;
+                }
+                
+                if (strictMode !== 1) { // Not Blind Mode
+                    feedbackDiv.textContent = "Correct!";
+                    feedbackDiv.className = 'verification-feedback feedback-correct';
+                    feedbackDiv.style.display = 'block';
+                }
+                
+                // Check if we've reached the maximum rounds in fixed mode
+                if (!endlessMode && currentRound >= totalRounds - 1) {
+                    // If we've reached required consecutive correct, show success
+                    if (consecutiveCorrect >= requiredConsecutive) {
+                        showResults(true);
+                    } else {
+                        showResults(false); // Not enough consecutive correct before running out of rounds
+                    }
+                    return;
+                }
+                
+                // In endless mode, check if we've reached enough consecutive correct answers
+                if (endlessMode && consecutiveCorrect >= requiredConsecutive) {
+                    showResults(true); // Authentication successful
+                    return;
+                }
+                
+                // Continue to next round
+                if (strictMode === 2) { // Feedback Mode
+                    // Show feedback briefly, then auto-advance
+                    setTimeout(() => {
+                        nextRound();
+                    }, 1000);
+                } else if (strictMode === 3) { // Learning Mode
+                    // Auto-advance after showing correct feedback
+                    setTimeout(() => {
+                        nextRound();
+                    }, 1000);
+                } else { // Blind Mode
+                    // Immediately advance
+                    nextRound();
+                }
+            } else {
+                // Incorrect selection
+                if (consecutiveCorrect < requiredConsecutive) {
+                    // Only reset if we haven't already reached the target
+                    consecutiveCorrect = 0;
+                }
+                
+                if (strictMode === 1) { // Blind Mode
+                    // Just move to next without feedback
+                    if (!endlessMode && currentRound >= totalRounds - 1) {
+                        // If we've reached required consecutive correct at any point, show success
+                        if (consecutiveCorrect >= requiredConsecutive) {
+                            showResults(true);
+                        } else {
+                            showResults(false); // Failed authentication
+                        }
+                    } else {
+                        nextRound();
+                    }
+                } else if (strictMode === 2) { // Feedback Mode
+                    // Show feedback briefly, then auto-advance
+                    feedbackDiv.textContent = "Incorrect! The correct song was " + songNames[currentTestSongIndex];
+                    feedbackDiv.className = 'verification-feedback feedback-incorrect';
+                    feedbackDiv.style.display = 'block';
+                    
+                    if (!endlessMode && currentRound >= totalRounds - 1) {
+                        // If we've reached required consecutive correct at any point, show success
+                        if (consecutiveCorrect >= requiredConsecutive) {
+                            showResults(true);
+                        } else {
+                            showResults(false); // Failed authentication
+                        }
+                    } else {
+                        setTimeout(() => {
+                            nextRound();
+                        }, 1000);
+                    }
+                } else if (strictMode === 3) { // Learning Mode
+                    // User must try again until correct
+                    feedbackDiv.textContent = "Incorrect! Try again.";
+                    feedbackDiv.className = 'verification-feedback feedback-incorrect';
+                    feedbackDiv.style.display = 'block';
+                    
+                    // Reset selection after a brief delay
+                    setTimeout(() => {
+                        selectedSongIndex = null;
+                        const options = document.querySelectorAll('.song-option');
+                        options.forEach(option => {
+                            option.classList.remove('selected');
+                        });
+                    }, 500);
+                    
+                    // Count as additional attempt
+                    attemptCounts[currentRound]++;
+                }
+            }
+        }
+        
+        // Move to next round
+        function nextRound() {
+            currentRound++;
+            startTestRound();
+        }
+        
+        // Show results
+        function showResults(success) {
+            // Stop any playing audio
+            if (currentAudioSource) {
+                currentAudioSource.stop();
+            }
+            
+            document.getElementById('test-section').style.display = 'none';
+            document.getElementById('results-section').style.display = 'block';
+            
+            const resultDiv = document.getElementById('auth-result');
+            if (success) {
+                resultDiv.innerHTML = `
+                    <div style="color: #2ecc71; font-size: 48px;">
+                        <span class="material-icons" style="font-size: 48px;">check_circle</span>
+                    </div>
+                    <h3 style="color: #2ecc71;">Authentication Successful!</h3>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="color: #e74c3c; font-size: 48px;">
+                        <span class="material-icons" style="font-size: 48px;">error</span>
+                    </div>
+                    <h3 style="color: #e74c3c;">Authentication Failed</h3>
+                `;
+            }
+            
+            // Calculate test results
+            const totalTime = Date.now() - testStartTime;
+            const totalTimeSeconds = totalTime / 1000;
+            
+            // Only count rounds that were actually played
+            const completedRounds = Math.min(currentRound + 1, totalRounds);
+            const validRoundTimes = roundTimes.slice(0, completedRounds);
+            const validAttemptCounts = attemptCounts.slice(0, completedRounds);
+            
+            const totalAttempts = validAttemptCounts.reduce((sum, count) => sum + count, 0);
+            const avgAttemptsPerRound = totalAttempts / completedRounds;
+            
+            // Display results
+            const resultsDataDiv = document.getElementById('results-data');
+                resultsDataDiv.innerHTML = `
+                <div class="result-stat"><strong>User ID:</strong> ${getUserId()}</div>
+                <div class="result-stat"><strong>Authentication Type:</strong> Music Recognition</div>
+                <div class="result-stat"><strong>Result:</strong> ${success ? 'Successful' : 'Failed'}</div>
+                <div class="result-stat"><strong>Total Authentication Time:</strong> ${totalTimeSeconds.toFixed(2)} seconds</div>
+                <div class="result-stat"><strong>Rounds Played:</strong> ${completedRounds}</div>
+                <div class="result-stat"><strong>Consecutive Correct at End:</strong> ${consecutiveCorrect}/${requiredConsecutive}</div>
+                <div class="result-stat"><strong>Total Attempts:</strong> ${totalAttempts}</div>
+                <div class="result-stat"><strong>Average Attempts per Round:</strong> ${avgAttemptsPerRound.toFixed(2)}</div>
+                <div class="result-stat"><strong>Authentication Mode:</strong> ${endlessMode ? 'Endless' : 'Fixed Rounds'}</div>
+                <div class="result-stat"><strong>Verification Mode:</strong> ${getVerificationModeName(strictMode)}</div>
+                <div class="result-stat"><strong>Audio Segments:</strong> ${randomSegments ? 'Random' : 'Fixed'}</div>
+                <div class="result-stat"><strong>Segment Duration:</strong> ${segmentDuration} seconds</div>
+            `;
+            
+            // Save results to localStorage
+            const testResults = {
+                userId: getUserId(),
+                authType: 'music',
+                success: success,
+                totalTime: totalTimeSeconds,
+                totalRounds: completedRounds,
+                requiredConsecutive: requiredConsecutive,
+                achievedConsecutive: consecutiveCorrect,
+                roundTimes: validRoundTimes,
+                attemptCounts: validAttemptCounts,
+                totalAttempts: totalAttempts,
+                avgAttemptsPerRound: avgAttemptsPerRound,
+                settings: {
+                    endlessMode: endlessMode,
+                    strictMode: strictMode,
+                    randomSegments: randomSegments,
+                    segmentDuration: segmentDuration
+                },
+                timestamp: new Date().toISOString()
+            };
+            
+            // Store in localStorage
+            let results = JSON.parse(localStorage.getItem('results')) || {};
+            if (!results[getUserId()]) {
+                results[getUserId()] = {};
+            }
+            results[getUserId()].music = testResults;
+            localStorage.setItem('results', JSON.stringify(results));
+            
+            // Immediately redirect to results page
+            window.location.href = `results.html?auth=music&success=${success}&userId=${getUserId()}`;
+        }
+        
+        // Copy results to clipboard
+        function copyResults() {
+            // Get result data
+            const userId = getUserId();
+            let results = JSON.parse(localStorage.getItem('results')) || {};
+            const musicResults = results[userId]?.music || {};
+            
+            // Combine into a formatted string
+            let resultText = "=== MUSIC AUTHENTICATION RESULTS ===\n\n";
+            resultText += `User ID: ${userId}\n`;
+            resultText += `Date: ${new Date().toLocaleString()}\n\n`;
+            
+            resultText += "=== TEST DATA ===\n";
+            resultText += `Authentication Type: Music Recognition\n`;
+            resultText += `Result: ${musicResults.success ? 'Successful' : 'Failed'}\n`;
+            resultText += `Total Authentication Time: ${musicResults.totalTime?.toFixed(2)} seconds\n`;
+            resultText += `Rounds Played: ${musicResults.totalRounds}\n`;
+            resultText += `Required Consecutive Correct: ${musicResults.requiredConsecutive}\n`;
+            resultText += `Achieved Consecutive Correct: ${musicResults.achievedConsecutive}\n`;
+            resultText += `Total Attempts: ${musicResults.totalAttempts}\n`;
+            resultText += `Average Attempts per Round: ${musicResults.avgAttemptsPerRound?.toFixed(2)}\n\n`;
+            
+            resultText += "=== SETTINGS ===\n";
+            resultText += `Authentication Mode: ${musicResults.settings?.endlessMode ? 'Endless' : 'Fixed Rounds'}\n`;
+            resultText += `Verification Mode: ${getVerificationModeName(musicResults.settings?.strictMode)}\n`;
+            resultText += `Audio Segments: ${musicResults.settings?.randomSegments ? 'Random' : 'Fixed'}\n`;
+            resultText += `Segment Duration: ${musicResults.settings?.segmentDuration} seconds\n\n`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert("Results copied to clipboard!");
+            }, (err) => {
+                console.error('Could not copy text: ', err);
+                alert("Failed to copy results. Please try the download option instead.");
+            });
+        }
+        
+        // Download results as a text file
+        function downloadResults() {
+            // Get result data
+            const userId = getUserId();
+            let results = JSON.parse(localStorage.getItem('results')) || {};
+            const musicResults = results[userId]?.music || {};
+            
+            // Create result text (reuse same format as copyResults)
+            let resultText = "=== MUSIC AUTHENTICATION RESULTS ===\n\n";
+            resultText += `User ID: ${userId}\n`;
+            resultText += `Date: ${new Date().toLocaleString()}\n\n`;
+            
+            resultText += "=== TEST DATA ===\n";
+            resultText += `Authentication Type: Music Recognition\n`;
+            resultText += `Result: ${musicResults.success ? 'Successful' : 'Failed'}\n`;
+            resultText += `Total Authentication Time: ${musicResults.totalTime?.toFixed(2)} seconds\n`;
+            resultText += `Rounds Played: ${musicResults.totalRounds}\n`;
+            resultText += `Required Consecutive Correct: ${musicResults.requiredConsecutive}\n`;
+            resultText += `Achieved Consecutive Correct: ${musicResults.achievedConsecutive}\n`;
+            resultText += `Total Attempts: ${musicResults.totalAttempts}\n`;
+            resultText += `Average Attempts per Round: ${musicResults.avgAttemptsPerRound?.toFixed(2)}\n\n`;
+            
+            resultText += "=== SETTINGS ===\n";
+            resultText += `Authentication Mode: ${musicResults.settings?.endlessMode ? 'Endless' : 'Fixed Rounds'}\n`;
+            resultText += `Verification Mode: ${getVerificationModeName(musicResults.settings?.strictMode)}\n`;
+            resultText += `Audio Segments: ${musicResults.settings?.randomSegments ? 'Random' : 'Fixed'}\n`;
+            resultText += `Segment Duration: ${musicResults.settings?.segmentDuration} seconds\n\n`;
+            
+            // Create file and download
+            const blob = new Blob([resultText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `music_auth_results_${userId}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Complete the experiment and return to home
+        function finishExperiment() {
+            // Redirect to home page
+            window.location.href = 'index.html';
+        }
+        
+        // Utility function to shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Authentication System - Human Centered Security Project</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            margin-top: 40px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #7f8c8d;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .modes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 40px;
+        }
+        .mode-card {
+            width: 220px;
+            padding: 20px;
+            margin: 10px;
+            background: white;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .mode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        .mode-card h3 {
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+        .mode-card p {
+            color: #95a5a6;
+            font-size: 14px;
+        }
+        .user-id {
+            margin-top: 30px;
+            text-align: center;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .start-btn {
+            display: block;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin: 20px auto 0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .start-btn:hover {
+            background-color: #2980b9;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Music Authentication System</h1>
+            <p class="description">Exploring Music Recognition vs Traditional Passwords for Authentication</p>
+        </header>
+
+        <div class="user-id">
+            <p>Your Participant ID: <span id="user-id-display">Generating...</span></p>
+            <p>Please note this ID, you will need to provide it at the end of the experiment</p>
+            <button class="start-btn" onclick="regenerateUserId()">Generate New ID</button>
+        </div>
+
+        <div class="modes">
+            <div class="mode-card" onclick="navigateTo('music.html')">
+                <span class="material-icons icon">music_note</span>
+                <h3>Music Authentication</h3>
+                <p>Authenticate using music recognition</p>
+            </div>
+            
+            <div class="mode-card" onclick="navigateTo('password.html')">
+                <span class="material-icons icon">lock</span>
+                <h3>Password Authentication</h3>
+                <p>Authenticate using traditional passwords</p>
+            </div>
+            
+            <div class="mode-card" onclick="navigateTo('settings.html')">
+                <span class="material-icons icon">settings</span>
+                <h3>System Settings</h3>
+                <p>Adjust authentication parameters</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Human Centred Security Course Project | University of Glasgow</p>
+        </footer>
+    </div>
+
+    <script>
+        // Generate and store user ID
+        function generateUserId() {
+            // Check if user ID already exists
+            let userId = localStorage.getItem('userId');
+            
+            // If not, generate a new one
+            if (!userId) {
+                userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('userId', userId);
+                
+                // Initialize results storage
+                localStorage.setItem('results', JSON.stringify({}));
+            }
+            
+            return userId;
+        }
+        
+        // Regenerate user ID (for new participants)
+        function regenerateUserId() {
+            // Generate new random ID
+            const userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('userId', userId);
+            
+            // Reset results storage
+            localStorage.setItem('results', JSON.stringify({}));
+            
+            // Update display
+            document.getElementById('user-id-display').textContent = userId;
+        }
+        
+        // Display user ID when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const userId = generateUserId();
+            document.getElementById('user-id-display').textContent = userId;
+        });
+        
+        // Page navigation
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
+</body>
+</html>

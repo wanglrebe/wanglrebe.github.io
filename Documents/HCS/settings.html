@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Authentication System - Settings</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            margin-top: 40px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #7f8c8d;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        .btn-success {
+            background-color: #2ecc71;
+        }
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        .setting-group {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .setting-group:last-child {
+            border-bottom: none;
+        }
+        .setting-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .setting-description {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        select, input[type="number"] {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 5px;
+        }
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-right: 10px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: #2196F3;
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        .toggle-label {
+            font-weight: normal;
+        }
+        .conditional-setting {
+            margin-left: 20px;
+            padding: 10px;
+            border-left: 3px solid #3498db;
+            margin-top: 5px;
+            background-color: #ecf0f1;
+            display: none;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .icon {
+            font-size: 24px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>System Settings</h1>
+            <p class="description">Configure authentication parameters for the experiment</p>
+        </header>
+
+        <!-- Music Authentication Settings -->
+        <div class="section">
+            <h2><span class="material-icons icon">music_note</span> Music Authentication Settings</h2>
+            
+            <div class="setting-group">
+                <label class="setting-label" for="consecutiveCorrect">Consecutive Correct Identifications Required</label>
+                <p class="setting-description">Number of songs that must be correctly identified in a row to pass authentication</p>
+                <select id="consecutiveCorrect">
+                    <option value="3">3 songs</option>
+                    <option value="4">4 songs</option>
+                    <option value="5">5 songs</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <div class="toggle-container">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="endlessMode">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label">Endless Mode</span>
+                </div>
+                <p class="setting-description">If enabled, authentication continues until the user correctly identifies the required number of songs in a row. If disabled, authentication stops after a set number of rounds.</p>
+                
+                <div id="totalRoundsSettings" class="conditional-setting">
+                    <label class="setting-label" for="totalRounds">Total Authentication Rounds</label>
+                    <p class="setting-description">Maximum number of rounds in the authentication session</p>
+                    <input type="number" id="totalRounds" min="3" max="10" value="5">
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <label class="setting-label" for="strictMode">Verification Mode</label>
+                <p class="setting-description">Controls how users progress through verification rounds</p>
+                <select id="strictMode">
+                    <option value="1">Blind Mode - No feedback, proceed to next round after selection</option>
+                    <option value="2">Feedback Mode - Show result, automatically proceed to next round</option>
+                    <option value="3">Learning Mode - Must select correct answer to proceed</option>
+                </select>
+            </div>
+            
+            <div class="setting-group">
+                <div class="toggle-container">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="randomSegments">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label">Random Audio Segments</span>
+                </div>
+                <p class="setting-description">If enabled, a different random segment is played each time the Play button is pressed. If disabled, the same segment is played for each round.</p>
+            </div>
+            
+            <div class="setting-group">
+                <label class="setting-label" for="segmentDuration">Audio Segment Duration (seconds)</label>
+                <p class="setting-description">Length of the audio segment played during authentication</p>
+                <input type="number" id="segmentDuration" min="0.5" max="5" step="0.5" value="1">
+            </div>
+        </div>
+
+        <!-- Password Authentication Settings -->
+        <div class="section">
+            <h2><span class="material-icons icon">lock</span> Password Authentication Settings</h2>
+            
+            <div class="setting-group">
+                <label class="setting-label" for="maxPasswordAttempts">Maximum Password Attempts</label>
+                <p class="setting-description">Maximum number of incorrect password attempts allowed (0 for unlimited)</p>
+                <input type="number" id="maxPasswordAttempts" min="0" max="10" value="3">
+            </div>
+            
+            <div class="setting-group">
+                <label class="setting-label" for="passwordLength">Required Password Length</label>
+                <p class="setting-description">Minimum number of characters required for the password</p>
+                <input type="number" id="passwordLength" min="4" max="16" value="8">
+            </div>
+        </div>
+
+        <!-- Reset and Save Buttons -->
+        <div class="nav-buttons">
+            <button class="btn btn-success" onclick="saveSettings()"><span class="material-icons icon">save</span> Save Settings</button>
+            <button class="btn btn-secondary" onclick="resetSettings()"><span class="material-icons icon">restore</span> Reset to Defaults</button>
+            <button class="btn" onclick="window.location.href='index.html'"><span class="material-icons icon">home</span> Back to Home</button>
+        </div>
+
+        <footer>
+            <p>Human Centred Security Course Project | University of Glasgow</p>
+        </footer>
+    </div>
+
+    <script>
+        // Default settings
+        const defaultSettings = {
+            // Music authentication settings
+            consecutiveCorrect: 3,
+            endlessMode: false,
+            totalRounds: 5,
+            strictMode: 2,
+            randomSegments: true,
+            segmentDuration: 1,
+            
+            // Password authentication settings
+            maxPasswordAttempts: 3,
+            passwordLength: 8
+        };
+        
+        // Load settings when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            updateConditionalSettings();
+            
+            // Add event listeners for toggles
+            document.getElementById('endlessMode').addEventListener('change', updateConditionalSettings);
+        });
+        
+        // Update conditional settings visibility
+        function updateConditionalSettings() {
+            const endlessMode = document.getElementById('endlessMode').checked;
+            document.getElementById('totalRoundsSettings').style.display = endlessMode ? 'none' : 'block';
+        }
+        
+        // Load settings from localStorage
+        function loadSettings() {
+            let settings = JSON.parse(localStorage.getItem('authSettings')) || defaultSettings;
+            
+            // Apply settings to form elements
+            document.getElementById('consecutiveCorrect').value = settings.consecutiveCorrect || defaultSettings.consecutiveCorrect;
+            document.getElementById('endlessMode').checked = settings.endlessMode || defaultSettings.endlessMode;
+            document.getElementById('totalRounds').value = settings.totalRounds || defaultSettings.totalRounds;
+            document.getElementById('strictMode').value = settings.strictMode || defaultSettings.strictMode;
+            document.getElementById('randomSegments').checked = settings.randomSegments !== undefined ? settings.randomSegments : defaultSettings.randomSegments;
+            document.getElementById('segmentDuration').value = settings.segmentDuration || defaultSettings.segmentDuration;
+            document.getElementById('maxPasswordAttempts').value = settings.maxPasswordAttempts || defaultSettings.maxPasswordAttempts;
+            document.getElementById('passwordLength').value = settings.passwordLength || defaultSettings.passwordLength;
+        }
+        
+        // Save settings to localStorage
+        function saveSettings() {
+            const settings = {
+                // Music authentication settings
+                consecutiveCorrect: parseInt(document.getElementById('consecutiveCorrect').value),
+                endlessMode: document.getElementById('endlessMode').checked,
+                totalRounds: parseInt(document.getElementById('totalRounds').value),
+                strictMode: parseInt(document.getElementById('strictMode').value),
+                randomSegments: document.getElementById('randomSegments').checked,
+                segmentDuration: parseFloat(document.getElementById('segmentDuration').value),
+                
+                // Password authentication settings
+                maxPasswordAttempts: parseInt(document.getElementById('maxPasswordAttempts').value),
+                passwordLength: parseInt(document.getElementById('passwordLength').value)
+            };
+            
+            // Validate settings
+            if (settings.segmentDuration < 0.5 || settings.segmentDuration > 5) {
+                alert("Audio segment duration must be between 0.5 and 5 seconds.");
+                return;
+            }
+            
+            if (settings.totalRounds < settings.consecutiveCorrect) {
+                alert("Total rounds must be at least equal to the required consecutive correct identifications.");
+                document.getElementById('totalRounds').value = settings.consecutiveCorrect;
+                settings.totalRounds = settings.consecutiveCorrect;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('authSettings', JSON.stringify(settings));
+            
+            alert("Settings saved successfully!");
+        }
+        
+        // Reset settings to defaults
+        function resetSettings() {
+            if (confirm("Are you sure you want to reset all settings to default values?")) {
+                localStorage.setItem('authSettings', JSON.stringify(defaultSettings));
+                loadSettings();
+                updateConditionalSettings();
+                alert("Settings have been reset to defaults.");
+            }
+        }
+    </script>
+</body>
+</html>
