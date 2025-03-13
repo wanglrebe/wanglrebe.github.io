@@ -21,6 +21,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             border-radius: 5px;
             margin-top: 40px;
+            margin-bottom: 40px;
         }
         header {
             text-align: center;
@@ -131,6 +132,111 @@
             color: #7f8c8d;
             font-size: 14px;
         }
+        .feedback-section {
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            padding-top: 15px;
+        }
+        .feedback-section h4 {
+            color: #3498db;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .scenario {
+            background-color: #fff;
+            border-left: 3px solid #3498db;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            border-radius: 0 4px 4px 0;
+        }
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+        .radio-option input {
+            margin-right: 5px;
+        }
+        .comparison-question {
+            background-color: #f0f7ff;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            background-color: white;
+            border-bottom: 1px solid white;
+            margin-bottom: -1px;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .progress-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 5px;
+            position: relative;
+            z-index: 1;
+        }
+        .progress-step.active {
+            font-weight: bold;
+            color: #3498db;
+        }
+        .progress-step.completed {
+            color: #2ecc71;
+        }
+        .progress-bar-container {
+            position: absolute;
+            height: 2px;
+            background-color: #eee;
+            width: 100%;
+            top: 50%;
+            z-index: 0;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #3498db;
+            width: 0%;
+            transition: width 0.3s;
+        }
     </style>
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -159,41 +265,311 @@
             </div>
             
             <div class="feedback-form">
-                <h3><span class="material-icons icon">feedback</span> User Feedback</h3>
+                <h3><span class="material-icons icon">feedback</span> User Feedback Questionnaire</h3>
                 
-                <label for="difficulty-rating">Difficulty (1-5, 1=Very Easy, 5=Very Difficult):</label>
-                <select id="difficulty-rating">
-                    <option value="1">1 - Very Easy</option>
-                    <option value="2">2 - Easy</option>
-                    <option value="3" selected>3 - Moderate</option>
-                    <option value="4">4 - Difficult</option>
-                    <option value="5">5 - Very Difficult</option>
-                </select>
+                <div class="progress-indicator">
+                    <div class="progress-bar-container">
+                        <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                    </div>
+                    <div class="progress-step active" id="step1">Usability</div>
+                    <div class="progress-step" id="step2">Security</div>
+                    <div class="progress-step" id="step3">User Experience</div>
+                    <div class="progress-step" id="step4">Scenarios</div>
+                </div>
                 
-                <label for="satisfaction-rating">Satisfaction (1-5, 1=Very Unsatisfied, 5=Very Satisfied):</label>
-                <select id="satisfaction-rating">
-                    <option value="1">1 - Very Unsatisfied</option>
-                    <option value="2">2 - Unsatisfied</option>
-                    <option value="3" selected>3 - Neutral</option>
-                    <option value="4">4 - Satisfied</option>
-                    <option value="5">5 - Very Satisfied</option>
-                </select>
-                
-                <label for="security-rating">Perceived Security (1-5, 1=Very Insecure, 5=Very Secure):</label>
-                <select id="security-rating">
-                    <option value="1">1 - Very Insecure</option>
-                    <option value="2">2 - Somewhat Insecure</option>
-                    <option value="3" selected>3 - Neutral</option>
-                    <option value="4">4 - Somewhat Secure</option>
-                    <option value="5">5 - Very Secure</option>
-                </select>
-                
-                <label for="comments">Other comments or suggestions:</label>
-                <textarea id="comments" rows="4"></textarea>
-                
-                <button class="btn btn-success" onclick="saveFeedback()">
-                    <span class="material-icons icon">save</span> Save Feedback
-                </button>
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <div class="tab-button active" onclick="showTab('usability')">Usability</div>
+                        <div class="tab-button" onclick="showTab('security')">Security</div>
+                        <div class="tab-button" onclick="showTab('experience')">User Experience</div>
+                        <div class="tab-button" onclick="showTab('scenarios')">Scenarios</div>
+                    </div>
+                    
+                    <!-- Usability Tab -->
+                    <div id="usability-tab" class="tab-content active">
+                        <div class="feedback-section">
+                            <h4>Usability Assessment</h4>
+                            
+                            <label for="difficulty-rating">Difficulty (1-5):</label>
+                            <select id="difficulty-rating">
+                                <option value="1">1 - Very Easy</option>
+                                <option value="2">2 - Easy</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Difficult</option>
+                                <option value="5">5 - Very Difficult</option>
+                            </select>
+                            
+                            <label for="learning-rating">Learning Difficulty (1-5):</label>
+                            <select id="learning-rating">
+                                <option value="1">1 - Very Easy to Learn</option>
+                                <option value="2">2 - Easy to Learn</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Difficult to Learn</option>
+                                <option value="5">5 - Very Difficult to Learn</option>
+                            </select>
+                            
+                            <label for="memory-burden-rating">Memory Burden (1-5):</label>
+                            <select id="memory-burden-rating">
+                                <option value="1">1 - Very Low Memory Burden</option>
+                                <option value="2">2 - Low Memory Burden</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - High Memory Burden</option>
+                                <option value="5">5 - Very High Memory Burden</option>
+                            </select>
+                            
+                            <label for="efficiency-rating">Operational Efficiency (1-5):</label>
+                            <select id="efficiency-rating">
+                                <option value="1">1 - Very Efficient</option>
+                                <option value="2">2 - Efficient</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Inefficient</option>
+                                <option value="5">5 - Very Inefficient</option>
+                            </select>
+                            
+                            <label for="error-recovery-rating">Error Recovery (1-5):</label>
+                            <select id="error-recovery-rating">
+                                <option value="1">1 - Very Easy to Recover</option>
+                                <option value="2">2 - Easy to Recover</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Difficult to Recover</option>
+                                <option value="5">5 - Very Difficult to Recover</option>
+                            </select>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button class="btn" onclick="nextTab('security')">Next <span class="material-icons">arrow_forward</span></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Tab -->
+                    <div id="security-tab" class="tab-content">
+                        <div class="feedback-section">
+                            <h4>Security Assessment</h4>
+                            
+                            <label for="security-rating">Overall Security (1-5):</label>
+                            <select id="security-rating">
+                                <option value="1">1 - Very Insecure</option>
+                                <option value="2">2 - Somewhat Insecure</option>
+                                <option value="3" selected>3 - Neutral</option>
+                                <option value="4">4 - Somewhat Secure</option>
+                                <option value="5">5 - Very Secure</option>
+                            </select>
+                            
+                            <label for="shoulder-surfing-rating">Resistance to Observation/Shoulder Surfing (1-5):</label>
+                            <select id="shoulder-surfing-rating">
+                                <option value="1">1 - Very Easy to Observe</option>
+                                <option value="2">2 - Easy to Observe</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Difficult to Observe</option>
+                                <option value="5">5 - Very Difficult to Observe</option>
+                            </select>
+                            
+                            <label for="guessing-rating">Resistance to Guessing Attacks (1-5):</label>
+                            <select id="guessing-rating">
+                                <option value="1">1 - Very Easy to Guess</option>
+                                <option value="2">2 - Easy to Guess</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Difficult to Guess</option>
+                                <option value="5">5 - Very Difficult to Guess</option>
+                            </select>
+                            
+                            <h4>Likelihood of Being Broken by Different Groups:</h4>
+                            
+                            <label for="stranger-rating">Strangers (1-5):</label>
+                            <select id="stranger-rating">
+                                <option value="1">1 - Very Easy</option>
+                                <option value="2">2 - Easy</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Difficult</option>
+                                <option value="5">5 - Very Difficult</option>
+                            </select>
+                            
+                            <label for="friends-rating">Friends Who Know You (1-5):</label>
+                            <select id="friends-rating">
+                                <option value="1">1 - Very Easy</option>
+                                <option value="2">2 - Easy</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Difficult</option>
+                                <option value="5">5 - Very Difficult</option>
+                            </select>
+                            
+                            <label for="music-aware-rating">People Who Know Your Music Taste (1-5):</label>
+                            <select id="music-aware-rating">
+                                <option value="1">1 - Very Easy</option>
+                                <option value="2">2 - Easy</option>
+                                <option value="3" selected>3 - Moderate</option>
+                                <option value="4">4 - Difficult</option>
+                                <option value="5">5 - Very Difficult</option>
+                            </select>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button class="btn btn-secondary" onclick="nextTab('usability')"><span class="material-icons">arrow_back</span> Previous</button>
+                            <button class="btn" onclick="nextTab('experience')">Next <span class="material-icons">arrow_forward</span></button>
+                        </div>
+                    </div>
+                    
+                    <!-- User Experience Tab -->
+                    <div id="experience-tab" class="tab-content">
+                        <div class="feedback-section">
+                            <h4>User Experience Assessment</h4>
+                            
+                            <label for="satisfaction-rating">Overall Satisfaction (1-5):</label>
+                            <select id="satisfaction-rating">
+                                <option value="1">1 - Very Unsatisfied</option>
+                                <option value="2">2 - Unsatisfied</option>
+                                <option value="3" selected>3 - Neutral</option>
+                                <option value="4">4 - Satisfied</option>
+                                <option value="5">5 - Very Satisfied</option>
+                            </select>
+                            
+                            <label for="enjoyment-rating">Enjoyment (1-5):</label>
+                            <select id="enjoyment-rating">
+                                <option value="1">1 - Very Boring</option>
+                                <option value="2">2 - Somewhat Boring</option>
+                                <option value="3" selected>3 - Neutral</option>
+                                <option value="4">4 - Enjoyable</option>
+                                <option value="5">5 - Very Enjoyable</option>
+                            </select>
+                            
+                            <label for="recommendation-rating">Likelihood to Recommend (1-5):</label>
+                            <select id="recommendation-rating">
+                                <option value="1">1 - Would Not Recommend</option>
+                                <option value="2">2 - Probably Not Recommend</option>
+                                <option value="3" selected>3 - Neutral</option>
+                                <option value="4">4 - Would Recommend</option>
+                                <option value="5">5 - Would Strongly Recommend</option>
+                            </select>
+                            
+                            <label for="longterm-rating">Willingness for Long-term Use (1-5):</label>
+                            <select id="longterm-rating">
+                                <option value="1">1 - Would Not Use Long-term</option>
+                                <option value="2">2 - Probably Not Use Long-term</option>
+                                <option value="3" selected>3 - Neutral</option>
+                                <option value="4">4 - Would Use Long-term</option>
+                                <option value="5">5 - Would Definitely Use Long-term</option>
+                            </select>
+                            
+                            <h4>Suitability for Different Contexts:</h4>
+                            
+                            <label for="home-rating">Home Devices (1-5):</label>
+                            <select id="home-rating">
+                                <option value="1">1 - Not at All Suitable</option>
+                                <option value="2">2 - Somewhat Unsuitable</option>
+                                <option value="3" selected>3 - Neutral</option>
+                                <option value="4">4 - Somewhat Suitable</option>
+                                <option value="5">5 - Very Suitable</option>
+                            </select>
+                            
+                            <label for="work-rating">Work Devices (1-5):</label>
+                            <select id="work-rating">
+                                <option value="1">1 - Not at All Suitable</option>
+                                <option value="2">2 - Somewhat Unsuitable</option>
+                                <option value="3" selected>3 - Neutral</option>
+                                <option value="4">4 - Somewhat Suitable</option>
+                                <option value="5">5 - Very Suitable</option>
+                            </select>
+                            
+                            <label for="public-rating">Public Places (1-5):</label>
+                            <select id="public-rating">
+                                <option value="1">1 - Not at All Suitable</option>
+                                <option value="2">2 - Somewhat Unsuitable</option>
+                                <option value="3" selected>3 - Neutral</option>
+                                <option value="4">4 - Somewhat Suitable</option>
+                                <option value="5">5 - Very Suitable</option>
+                            </select>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button class="btn btn-secondary" onclick="nextTab('security')"><span class="material-icons">arrow_back</span> Previous</button>
+                            <button class="btn" onclick="nextTab('scenarios')">Next <span class="material-icons">arrow_forward</span></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Scenarios Tab -->
+                    <div id="scenarios-tab" class="tab-content">
+                        <div class="feedback-section">
+                            <h4>Scenario-based Questions</h4>
+                            
+                            <div class="scenario">
+                                <p><strong>Scenario 1: Daily Use</strong></p>
+                                <p>Imagine using music authentication to unlock your phone multiple times every day. How would this experience be compared to traditional password/PIN?</p>
+                                <select id="daily-use-rating">
+                                    <option value="1">1 - Much Worse Than Password</option>
+                                    <option value="2">2 - Slightly Worse</option>
+                                    <option value="3" selected>3 - About the Same</option>
+                                    <option value="4">4 - Slightly Better</option>
+                                    <option value="5">5 - Much Better Than Password</option>
+                                </select>
+                            </div>
+                            
+                            <div class="scenario">
+                                <p><strong>Scenario 2: Public Places</strong></p>
+                                <p>Imagine using music authentication in a crowded coffee shop. Would you have any concerns about privacy or security?</p>
+                                <select id="public-concern-rating">
+                                    <option value="1">1 - Very Concerned</option>
+                                    <option value="2">2 - Somewhat Concerned</option>
+                                    <option value="3" selected>3 - Neutral</option>
+                                    <option value="4">4 - Mostly Unconcerned</option>
+                                    <option value="5">5 - Not Concerned At All</option>
+                                </select>
+                            </div>
+                            
+                            <div class="scenario">
+                                <p><strong>Scenario 3: Emergency Situation</strong></p>
+                                <p>In an emergency when you need quick access to your device, how reliable do you think music authentication would be?</p>
+                                <select id="emergency-rating">
+                                    <option value="1">1 - Very Unreliable</option>
+                                    <option value="2">2 - Somewhat Unreliable</option>
+                                    <option value="3" selected>3 - Neutral</option>
+                                    <option value="4">4 - Somewhat Reliable</option>
+                                    <option value="5">5 - Very Reliable</option>
+                                </select>
+                            </div>
+                            
+                            <div class="scenario">
+                                <p><strong>Scenario 4: Security Risk</strong></p>
+                                <p>If someone watched you authenticate using music several times, how likely is it they could successfully guess your music choices?</p>
+                                <select id="observation-risk-rating">
+                                    <option value="1">1 - Very Likely</option>
+                                    <option value="2">2 - Somewhat Likely</option>
+                                    <option value="3" selected>3 - Neutral</option>
+                                    <option value="4">4 - Somewhat Unlikely</option>
+                                    <option value="5">5 - Very Unlikely</option>
+                                </select>
+                            </div>
+                            
+                            <div class="comparison-question">
+                                <p><strong>Overall Comparison</strong></p>
+                                <p>Comparing music authentication to traditional passwords, which do you prefer overall?</p>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="prefer-music" name="preference" value="music">
+                                        <label for="prefer-music">Prefer Music Authentication</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="prefer-password" name="preference" value="password">
+                                        <label for="prefer-password">Prefer Password Authentication</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="no-preference" name="preference" value="neutral" checked>
+                                        <label for="no-preference">No Strong Preference</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <label for="comments">Additional Comments or Suggestions:</label>
+                            <textarea id="comments" rows="4" placeholder="Please share any thoughts, feedback, or suggestions about the music authentication system..."></textarea>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button class="btn btn-secondary" onclick="nextTab('experience')"><span class="material-icons">arrow_back</span> Previous</button>
+                            <button class="btn btn-success" onclick="saveFeedback()">
+                                <span class="material-icons icon">save</span> Save All Feedback
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="nav-buttons">
@@ -216,6 +592,7 @@
         let authType = '';
         let success = false;
         let userId = '';
+        let currentTab = 'usability';
         
         // Get URL parameters
         function getUrlParams() {
@@ -258,6 +635,74 @@
             }
         }
         
+        // Show tab
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show the selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Activate the selected tab button
+            document.querySelectorAll('.tab-button').forEach(button => {
+                if (button.textContent.toLowerCase().includes(tabName)) {
+                    button.classList.add('active');
+                }
+            });
+            
+            // Update progress indicator
+            updateProgressIndicator(tabName);
+            
+            // Update current tab
+            currentTab = tabName;
+        }
+        
+        // Next tab
+        function nextTab(tabName) {
+            showTab(tabName);
+        }
+        
+        // Update progress indicator
+        function updateProgressIndicator(tabName) {
+            // Reset all steps
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.remove('active');
+                step.classList.remove('completed');
+            });
+            
+            // Set progress based on current tab
+            let progressPercent = 0;
+            
+            if (tabName === 'usability') {
+                document.getElementById('step1').classList.add('active');
+                progressPercent = 0;
+            } else if (tabName === 'security') {
+                document.getElementById('step2').classList.add('active');
+                document.getElementById('step1').classList.add('completed');
+                progressPercent = 33;
+            } else if (tabName === 'experience') {
+                document.getElementById('step3').classList.add('active');
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('step2').classList.add('completed');
+                progressPercent = 66;
+            } else if (tabName === 'scenarios') {
+                document.getElementById('step4').classList.add('active');
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('step2').classList.add('completed');
+                document.getElementById('step3').classList.add('completed');
+                progressPercent = 100;
+            }
+            
+            // Update progress bar
+            document.getElementById('progress-bar-fill').style.width = progressPercent + '%';}
+        
         // Get user ID from localStorage
         function getUserId() {
             return localStorage.getItem('userId') || 'unknown_user';
@@ -276,10 +721,37 @@
             
             // Load feedback if available
             if (testResults.feedback) {
+                // Basic fields from original form
                 document.getElementById('difficulty-rating').value = testResults.feedback.difficulty || 3;
                 document.getElementById('satisfaction-rating').value = testResults.feedback.satisfaction || 3;
                 document.getElementById('security-rating').value = testResults.feedback.security || 3;
                 document.getElementById('comments').value = testResults.feedback.comments || '';
+                
+                // New fields
+                if (testResults.feedback.learning) document.getElementById('learning-rating').value = testResults.feedback.learning;
+                if (testResults.feedback.memoryBurden) document.getElementById('memory-burden-rating').value = testResults.feedback.memoryBurden;
+                if (testResults.feedback.efficiency) document.getElementById('efficiency-rating').value = testResults.feedback.efficiency;
+                if (testResults.feedback.errorRecovery) document.getElementById('error-recovery-rating').value = testResults.feedback.errorRecovery;
+                if (testResults.feedback.shoulderSurfing) document.getElementById('shoulder-surfing-rating').value = testResults.feedback.shoulderSurfing;
+                if (testResults.feedback.guessing) document.getElementById('guessing-rating').value = testResults.feedback.guessing;
+                if (testResults.feedback.strangerRisk) document.getElementById('stranger-rating').value = testResults.feedback.strangerRisk;
+                if (testResults.feedback.friendsRisk) document.getElementById('friends-rating').value = testResults.feedback.friendsRisk;
+                if (testResults.feedback.musicAwareRisk) document.getElementById('music-aware-rating').value = testResults.feedback.musicAwareRisk;
+                if (testResults.feedback.enjoyment) document.getElementById('enjoyment-rating').value = testResults.feedback.enjoyment;
+                if (testResults.feedback.recommendation) document.getElementById('recommendation-rating').value = testResults.feedback.recommendation;
+                if (testResults.feedback.longterm) document.getElementById('longterm-rating').value = testResults.feedback.longterm;
+                if (testResults.feedback.homeSuitability) document.getElementById('home-rating').value = testResults.feedback.homeSuitability;
+                if (testResults.feedback.workSuitability) document.getElementById('work-rating').value = testResults.feedback.workSuitability;
+                if (testResults.feedback.publicSuitability) document.getElementById('public-rating').value = testResults.feedback.publicSuitability;
+                if (testResults.feedback.dailyUse) document.getElementById('daily-use-rating').value = testResults.feedback.dailyUse;
+                if (testResults.feedback.publicConcern) document.getElementById('public-concern-rating').value = testResults.feedback.publicConcern;
+                if (testResults.feedback.emergency) document.getElementById('emergency-rating').value = testResults.feedback.emergency;
+                if (testResults.feedback.observationRisk) document.getElementById('observation-risk-rating').value = testResults.feedback.observationRisk;
+                
+                // Radio buttons for preference
+                if (testResults.feedback.preference) {
+                    document.querySelector(`input[name="preference"][value="${testResults.feedback.preference}"]`).checked = true;
+                }
             }
             
             // Display results based on auth type
@@ -336,10 +808,47 @@
         
         // Save feedback
         function saveFeedback() {
-            const difficulty = document.getElementById('difficulty-rating').value;
-            const satisfaction = document.getElementById('satisfaction-rating').value;
-            const security = document.getElementById('security-rating').value;
-            const comments = document.getElementById('comments').value;
+            // Collect all feedback data
+            const feedbackData = {
+                // Original fields
+                difficulty: document.getElementById('difficulty-rating').value,
+                satisfaction: document.getElementById('satisfaction-rating').value,
+                security: document.getElementById('security-rating').value,
+                comments: document.getElementById('comments').value,
+                
+                // New usability fields
+                learning: document.getElementById('learning-rating').value,
+                memoryBurden: document.getElementById('memory-burden-rating').value,
+                efficiency: document.getElementById('efficiency-rating').value,
+                errorRecovery: document.getElementById('error-recovery-rating').value,
+                
+                // New security fields
+                shoulderSurfing: document.getElementById('shoulder-surfing-rating').value,
+                guessing: document.getElementById('guessing-rating').value,
+                strangerRisk: document.getElementById('stranger-rating').value,
+                friendsRisk: document.getElementById('friends-rating').value,
+                musicAwareRisk: document.getElementById('music-aware-rating').value,
+                
+                // New user experience fields
+                enjoyment: document.getElementById('enjoyment-rating').value,
+                recommendation: document.getElementById('recommendation-rating').value,
+                longterm: document.getElementById('longterm-rating').value,
+                homeSuitability: document.getElementById('home-rating').value,
+                workSuitability: document.getElementById('work-rating').value,
+                publicSuitability: document.getElementById('public-rating').value,
+                
+                // Scenario fields
+                dailyUse: document.getElementById('daily-use-rating').value,
+                publicConcern: document.getElementById('public-concern-rating').value,
+                emergency: document.getElementById('emergency-rating').value,
+                observationRisk: document.getElementById('observation-risk-rating').value,
+                
+                // Overall preference
+                preference: document.querySelector('input[name="preference"]:checked')?.value || 'neutral',
+                
+                // Timestamp
+                timestamp: new Date().toISOString()
+            };
             
             // Save to localStorage
             let results = JSON.parse(localStorage.getItem('results')) || {};
@@ -350,16 +859,10 @@
                 results[userId][authType] = {};
             }
             
-            results[userId][authType].feedback = {
-                difficulty: difficulty,
-                satisfaction: satisfaction,
-                security: security,
-                comments: comments
-            };
-            
+            results[userId][authType].feedback = feedbackData;
             localStorage.setItem('results', JSON.stringify(results));
             
-            alert("Feedback saved successfully!");
+            alert("Feedback saved successfully! Thank you for your participation.");
         }
         
         // Copy results to clipboard
@@ -415,10 +918,8 @@
             
             resultText += "=== USER FEEDBACK ===\n";
             if (results.feedback) {
-                resultText += `Difficulty Rating (1-5): ${results.feedback.difficulty}\n`;
-                resultText += `Satisfaction Rating (1-5): ${results.feedback.satisfaction}\n`;
-                resultText += `Perceived Security Rating (1-5): ${results.feedback.security}\n`;
-                resultText += `Comments: ${results.feedback.comments}\n`;
+                // Add all feedback fields to the output
+                resultText += formatFeedbackResults(results.feedback);
             } else {
                 resultText += "No feedback provided.\n";
             }
@@ -442,15 +943,59 @@
             
             resultText += "=== USER FEEDBACK ===\n";
             if (results.feedback) {
-                resultText += `Difficulty Rating (1-5): ${results.feedback.difficulty}\n`;
-                resultText += `Satisfaction Rating (1-5): ${results.feedback.satisfaction}\n`;
-                resultText += `Perceived Security Rating (1-5): ${results.feedback.security}\n`;
-                resultText += `Comments: ${results.feedback.comments}\n`;
+                // Add all feedback fields to the output
+                resultText += formatFeedbackResults(results.feedback);
             } else {
                 resultText += "No feedback provided.\n";
             }
             
             return resultText;
+        }
+        
+        // Format feedback results for text output
+        function formatFeedbackResults(feedback) {
+            let feedbackText = "";
+            
+            // Usability section
+            feedbackText += "USABILITY:\n";
+            feedbackText += `Difficulty Rating (1-5): ${feedback.difficulty}\n`;
+            feedbackText += `Learning Difficulty (1-5): ${feedback.learning}\n`;
+            feedbackText += `Memory Burden (1-5): ${feedback.memoryBurden}\n`;
+            feedbackText += `Operational Efficiency (1-5): ${feedback.efficiency}\n`;
+            feedbackText += `Error Recovery (1-5): ${feedback.errorRecovery}\n\n`;
+            
+            // Security section
+            feedbackText += "SECURITY:\n";
+            feedbackText += `Overall Security (1-5): ${feedback.security}\n`;
+            feedbackText += `Resistance to Observation (1-5): ${feedback.shoulderSurfing}\n`;
+            feedbackText += `Resistance to Guessing (1-5): ${feedback.guessing}\n`;
+            feedbackText += `Likelihood of Break by Strangers (1-5): ${feedback.strangerRisk}\n`;
+            feedbackText += `Likelihood of Break by Friends (1-5): ${feedback.friendsRisk}\n`;
+            feedbackText += `Likelihood of Break by Music-aware People (1-5): ${feedback.musicAwareRisk}\n\n`;
+            
+            // User Experience section
+            feedbackText += "USER EXPERIENCE:\n";
+            feedbackText += `Overall Satisfaction (1-5): ${feedback.satisfaction}\n`;
+            feedbackText += `Enjoyment (1-5): ${feedback.enjoyment}\n`;
+            feedbackText += `Recommendation Likelihood (1-5): ${feedback.recommendation}\n`;
+            feedbackText += `Long-term Use Willingness (1-5): ${feedback.longterm}\n`;
+            feedbackText += `Suitability for Home Devices (1-5): ${feedback.homeSuitability}\n`;
+            feedbackText += `Suitability for Work Devices (1-5): ${feedback.workSuitability}\n`;
+            feedbackText += `Suitability for Public Places (1-5): ${feedback.publicSuitability}\n\n`;
+            
+            // Scenarios section
+            feedbackText += "SCENARIOS:\n";
+            feedbackText += `Daily Use Rating (1-5): ${feedback.dailyUse}\n`;
+            feedbackText += `Public Place Concern (1-5): ${feedback.publicConcern}\n`;
+            feedbackText += `Emergency Reliability (1-5): ${feedback.emergency}\n`;
+            feedbackText += `Observation Attack Risk (1-5): ${feedback.observationRisk}\n`;
+            feedbackText += `Overall Preference: ${feedback.preference}\n\n`;
+            
+            // Comments
+            feedbackText += "COMMENTS:\n";
+            feedbackText += `${feedback.comments || "No additional comments provided."}\n`;
+            
+            return feedbackText;
         }
         
         // Download results as a text file
@@ -491,5 +1036,3 @@
             loadResults();
         });
     </script>
-</body>
-</html>
