@@ -93,7 +93,7 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        .feedback-form select, .feedback-form textarea {
+        .feedback-form select, .feedback-form textarea, .feedback-form input[type="number"], .feedback-form input[type="text"] {
             width: 100%;
             padding: 8px;
             margin-bottom: 15px;
@@ -177,6 +177,7 @@
             display: flex;
             border-bottom: 1px solid #ddd;
             margin-bottom: 15px;
+            flex-wrap: wrap;
         }
         .tab-button {
             padding: 10px 15px;
@@ -185,6 +186,7 @@
             border-bottom: none;
             border-radius: 4px 4px 0 0;
             margin-right: 5px;
+            margin-bottom: 5px;
             cursor: pointer;
         }
         .tab-button.active {
@@ -208,6 +210,7 @@
             justify-content: space-between;
             margin-bottom: 20px;
             position: relative;
+            flex-wrap: wrap;
         }
         .progress-step {
             flex: 1;
@@ -215,6 +218,8 @@
             padding: 5px;
             position: relative;
             z-index: 1;
+            min-width: 80px;
+            margin-bottom: 5px;
         }
         .progress-step.active {
             font-weight: bold;
@@ -236,6 +241,22 @@
             background-color: #3498db;
             width: 0%;
             transition: width 0.3s;
+        }
+        .checkbox-group {
+            margin-bottom: 15px;
+        }
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .checkbox-option input {
+            margin-right: 8px;
+        }
+        .subsection {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed #ddd;
         }
     </style>
     <!-- Material Icons -->
@@ -271,26 +292,100 @@
                     <div class="progress-bar-container">
                         <div id="progress-bar-fill" class="progress-bar-fill"></div>
                     </div>
-                    <div class="progress-step active" id="step1">Usability</div>
-                    <div class="progress-step" id="step2">Security</div>
-                    <div class="progress-step" id="step3">User Experience</div>
-                    <div class="progress-step" id="step4">Scenarios</div>
+                    <div class="progress-step active" id="step1">Basic Info</div>
+                    <div class="progress-step" id="step2">Usability</div>
+                    <div class="progress-step" id="step3">Security</div>
+                    <div class="progress-step" id="step4">Experience</div>
+                    <div class="progress-step" id="step5">Scenarios</div>
+                    <div class="progress-step" id="step6">Feedback</div>
                 </div>
                 
                 <div class="tab-container">
                     <div class="tab-buttons">
-                        <div class="tab-button active" onclick="showTab('usability')">Usability</div>
+                        <div class="tab-button active" onclick="showTab('basic')">Basic Info</div>
+                        <div class="tab-button" onclick="showTab('usability')">Usability</div>
                         <div class="tab-button" onclick="showTab('security')">Security</div>
-                        <div class="tab-button" onclick="showTab('experience')">User Experience</div>
+                        <div class="tab-button" onclick="showTab('experience')">Experience</div>
                         <div class="tab-button" onclick="showTab('scenarios')">Scenarios</div>
+                        <div class="tab-button" onclick="showTab('feedback')">Feedback</div>
+                    </div>
+                    
+                    <!-- Basic Info Tab -->
+                    <div id="basic-tab" class="tab-content active">
+                        <div class="feedback-section">
+                            <h4>Basic Information</h4>
+                            
+                            <label for="age-group">Age Group:</label>
+                            <select id="age-group">
+                                <option value="18-24">18-24 years</option>
+                                <option value="25-34">25-34 years</option>
+                                <option value="35-44">35-44 years</option>
+                                <option value="45-54">45-54 years</option>
+                                <option value="55+">55 years and above</option>
+                                <option value="prefer-not-to-say">Prefer not to say</option>
+                            </select>
+                            
+                            <label for="gender">Gender:</label>
+                            <select id="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="prefer-not-to-say">Prefer not to say</option>
+                            </select>
+                            
+                            <label for="music-background">Your Music Background:</label>
+                            <select id="music-background">
+                                <option value="professional">Professional Musician/Music Enthusiast</option>
+                                <option value="regular">Listen to Music Regularly</option>
+                                <option value="occasional">Listen to Music Occasionally</option>
+                                <option value="rarely">Rarely Listen to Music</option>
+                            </select>
+                            
+                            <label>Authentication Methods You Usually Use (Check all that apply):</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="auth-password" name="auth-methods" value="password">
+                                    <label for="auth-password">Alphanumeric Passwords</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="auth-pin" name="auth-methods" value="pin">
+                                    <label for="auth-pin">PIN Codes</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="auth-pattern" name="auth-methods" value="pattern">
+                                    <label for="auth-pattern">Pattern/Graphic Passwords</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="auth-fingerprint" name="auth-methods" value="fingerprint">
+                                    <label for="auth-fingerprint">Fingerprint Recognition</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="auth-face" name="auth-methods" value="face">
+                                    <label for="auth-face">Face Recognition</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="auth-other" name="auth-methods" value="other">
+                                    <label for="auth-other">Other</label>
+                                </div>
+                            </div>
+                            
+                            <div class="subsection" id="music-learning-time-section">
+                                <label for="music-learning-time">How many minutes did you spend learning the music authentication system?</label>
+                                <input type="number" id="music-learning-time" min="0" max="60">
+                            </div>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button class="btn" onclick="nextTab('usability')">Next <span class="material-icons">arrow_forward</span></button>
+                        </div>
                     </div>
                     
                     <!-- Usability Tab -->
-                    <div id="usability-tab" class="tab-content active">
+                    <div id="usability-tab" class="tab-content">
                         <div class="feedback-section">
                             <h4>Usability Assessment</h4>
                             
-                            <label for="difficulty-rating">Difficulty (1-5):</label>
+                            <label for="difficulty-rating">Overall Difficulty (1-5):</label>
                             <select id="difficulty-rating">
                                 <option value="1">1 - Very Easy</option>
                                 <option value="2">2 - Easy</option>
@@ -334,9 +429,58 @@
                                 <option value="4">4 - Difficult to Recover</option>
                                 <option value="5">5 - Very Difficult to Recover</option>
                             </select>
+                            
+                            <div class="subsection">
+                                <label for="memory-comparison">Compared to remembering passwords, remembering music selections is:</label>
+                                <select id="memory-comparison">
+                                    <option value="1">1 - Much Easier</option>
+                                    <option value="2">2 - Somewhat Easier</option>
+                                    <option value="3" selected>3 - About the Same</option>
+                                    <option value="4">4 - Somewhat Harder</option>
+                                    <option value="5">5 - Much Harder</option>
+                                </select>
+                                
+                                <label for="week-later-music">If you used this system again in a week, how likely would you be to remember your music selections?</label>
+                                <select id="week-later-music">
+                                    <option value="1">1 - Very Unlikely</option>
+                                    <option value="2">2 - Somewhat Unlikely</option>
+                                    <option value="3" selected>3 - Not Sure</option>
+                                    <option value="4">4 - Somewhat Likely</option>
+                                    <option value="5">5 - Very Likely</option>
+                                </select>
+                                
+                                <label for="week-later-password">If you used this system again in a week, how likely would you be to remember your password?</label>
+                                <select id="week-later-password">
+                                    <option value="1">1 - Very Unlikely</option>
+                                    <option value="2">2 - Somewhat Unlikely</option>
+                                    <option value="3" selected>3 - Not Sure</option>
+                                    <option value="4">4 - Somewhat Likely</option>
+                                    <option value="5">5 - Very Likely</option>
+                                </select>
+                            </div>
+                            
+                            <div class="subsection" id="unfamiliar-music-section">
+                                <h4>Unfamiliar Music Test (If Applicable)</h4>
+                                
+                                <label for="unfamiliar-music-count">Number of unfamiliar songs you were asked to recognize:</label>
+                                <input type="number" id="unfamiliar-music-count" min="0" max="5">
+                                
+                                <label for="unfamiliar-music-success">How many did you successfully recognize?</label>
+                                <input type="number" id="unfamiliar-music-success" min="0" max="5">
+                                
+                                <label for="unfamiliar-music-difficulty">How difficult was it to recognize unfamiliar music compared to familiar music?</label>
+                                <select id="unfamiliar-music-difficulty">
+                                    <option value="1">1 - Much Easier</option>
+                                    <option value="2">2 - Somewhat Easier</option>
+                                    <option value="3" selected>3 - About the Same</option>
+                                    <option value="4">4 - Somewhat Harder</option>
+                                    <option value="5">5 - Much Harder</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <div class="nav-buttons">
+                            <button class="btn btn-secondary" onclick="nextTab('basic')"><span class="material-icons">arrow_back</span> Previous</button>
                             <button class="btn" onclick="nextTab('security')">Next <span class="material-icons">arrow_forward</span></button>
                         </div>
                     </div>
@@ -401,6 +545,44 @@
                                 <option value="4">4 - Difficult</option>
                                 <option value="5">5 - Very Difficult</option>
                             </select>
+                            
+                            <div class="subsection" id="shoulder-surfing-section">
+                                <h4>Shoulder Surfing Experiment (If Applicable)</h4>
+                                
+                                <label for="prefer-public-auth">In public places where someone might be watching, which authentication method would you prefer?</label>
+                                <select id="prefer-public-auth">
+                                    <option value="music">Music Authentication</option>
+                                    <option value="password">Password Authentication</option>
+                                    <option value="neutral" selected>No Preference</option>
+                                </select>
+                                
+                                <label for="password-observation-concern">How concerned are you about others observing your password entry?</label>
+                                <select id="password-observation-concern">
+                                    <option value="1">1 - Not at All Concerned</option>
+                                    <option value="2">2 - Slightly Concerned</option>
+                                    <option value="3" selected>3 - Moderately Concerned</option>
+                                    <option value="4">4 - Very Concerned</option>
+                                    <option value="5">5 - Extremely Concerned</option>
+                                </select>
+                                
+                                <label for="music-observation-concern">How concerned are you about others observing your music selections?</label>
+                                <select id="music-observation-concern">
+                                    <option value="1">1 - Not at All Concerned</option>
+                                    <option value="2">2 - Slightly Concerned</option>
+                                    <option value="3" selected>3 - Moderately Concerned</option>
+                                    <option value="4">4 - Very Concerned</option>
+                                    <option value="5">5 - Extremely Concerned</option>
+                                </select>
+                                
+                                <label for="no-audio-security">If someone can observe your screen but cannot hear the audio, how likely could they successfully replicate your music authentication?</label>
+                                <select id="no-audio-security">
+                                    <option value="1">1 - Very Unlikely</option>
+                                    <option value="2">2 - Somewhat Unlikely</option>
+                                    <option value="3" selected>3 - Neutral</option>
+                                    <option value="4">4 - Somewhat Likely</option>
+                                    <option value="5">5 - Very Likely</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <div class="nav-buttons">
@@ -478,6 +660,58 @@
                                 <option value="4">4 - Somewhat Suitable</option>
                                 <option value="5">5 - Very Suitable</option>
                             </select>
+                            
+                            <div class="subsection" id="efficiency-comparison-section">
+                                <label for="which-more-efficient">Which authentication method did you find more efficient?</label>
+                                <select id="which-more-efficient">
+                                    <option value="music">Music Authentication</option>
+                                    <option value="password">Password Authentication</option>
+                                    <option value="same" selected>About the Same</option>
+                                </select>
+                                
+                                <label for="efficiency-reason">Please explain why:</label>
+                                <textarea id="efficiency-reason" rows="2" placeholder="Explain your efficiency comparison..."></textarea>
+                            </div>
+                            
+                            <div class="subsection" id="context-usability-section">
+                                <h4>Context Usability Experiment (If Applicable)</h4>
+                                
+                                <div class="subsection" id="noisy-environment-section">
+                                    <h4>Noisy Environment Test</h4>
+                                    <label for="noisy-difficulty">How difficult was authentication in a noisy environment?</label>
+                                    <select id="noisy-difficulty">
+                                        <option value="1">1 - Very Easy</option>
+                                        <option value="2">2 - Easy</option>
+                                        <option value="3" selected>3 - Moderate</option>
+                                        <option value="4">4 - Difficult</option>
+                                        <option value="5">5 - Very Difficult</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="subsection" id="public-environment-section">
+                                    <h4>Public Environment Test</h4>
+                                    <label for="public-comfort">How comfortable were you using the system in a public environment?</label>
+                                    <select id="public-comfort">
+                                        <option value="1">1 - Very Uncomfortable</option>
+                                        <option value="2">2 - Uncomfortable</option>
+                                        <option value="3" selected>3 - Neutral</option>
+                                        <option value="4">4 - Comfortable</option>
+                                        <option value="5">5 - Very Comfortable</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="subsection" id="emergency-environment-section">
+                                    <h4>Emergency Situation Test</h4>
+                                    <label for="emergency-difficulty">How difficult was authentication under time pressure?</label>
+                                    <select id="emergency-difficulty">
+                                        <option value="1">1 - Very Easy</option>
+                                        <option value="2">2 - Easy</option>
+                                        <option value="3" selected>3 - Moderate</option>
+                                        <option value="4">4 - Difficult</option>
+                                        <option value="5">5 - Very Difficult</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="nav-buttons">
@@ -539,6 +773,18 @@
                                 </select>
                             </div>
                             
+                            <div class="scenario">
+                                <p><strong>Scenario 5: Cognitive Load</strong></p>
+                                <p>Imagine you're multitasking or distracted when authenticating. Which method would be easier to use?</p>
+                                <select id="cognitive-load-rating">
+                                    <option value="1">1 - Password Much Easier</option>
+                                    <option value="2">2 - Password Somewhat Easier</option>
+                                    <option value="3" selected>3 - About the Same</option>
+                                    <option value="4">4 - Music Somewhat Easier</option>
+                                    <option value="5">5 - Music Much Easier</option>
+                                </select>
+                            </div>
+                            
                             <div class="comparison-question">
                                 <p><strong>Overall Comparison</strong></p>
                                 <p>Comparing music authentication to traditional passwords, which do you prefer overall?</p>
@@ -557,13 +803,45 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <label for="comments">Additional Comments or Suggestions:</label>
-                            <textarea id="comments" rows="4" placeholder="Please share any thoughts, feedback, or suggestions about the music authentication system..."></textarea>
                         </div>
                         
                         <div class="nav-buttons">
                             <button class="btn btn-secondary" onclick="nextTab('experience')"><span class="material-icons">arrow_back</span> Previous</button>
+                            <button class="btn" onclick="nextTab('feedback')">Next <span class="material-icons">arrow_forward</span></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Feedback Tab -->
+                    <div id="feedback-tab" class="tab-content">
+                        <div class="feedback-section">
+                            <h4>Additional Feedback</h4>
+                            
+                            <label for="music-familiar-count">For Experiment 3 (if applicable): How many of the 5 random songs were you familiar with?</label>
+                            <select id="music-familiar-count">
+                                <option value="0">0 songs</option>
+                                <option value="1">1 song</option>
+                                <option value="2">2 songs</option>
+                                <option value="3">3 songs</option>
+                                <option value="4">4 songs</option>
+                                <option value="5">5 songs</option>
+                                <option value="na" selected>Not Applicable</option>
+                            </select>
+                            
+                            <label for="music-advantages">What do you think are the biggest advantages of music authentication?</label>
+                            <textarea id="music-advantages" rows="3" placeholder="List advantages of music authentication..."></textarea>
+                            
+                            <label for="music-disadvantages">What do you think are the biggest disadvantages of music authentication?</label>
+                            <textarea id="music-disadvantages" rows="3" placeholder="List disadvantages of music authentication..."></textarea>
+                            
+                            <label for="music-improvements">What improvements would you suggest for the music authentication system?</label>
+                            <textarea id="music-improvements" rows="3" placeholder="Suggest improvements..."></textarea>
+                            
+                            <label for="comments">Any other comments or observations:</label>
+                            <textarea id="comments" rows="4" placeholder="Please share any additional thoughts, feedback, or observations about the authentication systems..."></textarea>
+                        </div>
+                        
+                        <div class="nav-buttons">
+                            <button class="btn btn-secondary" onclick="nextTab('scenarios')"><span class="material-icons">arrow_back</span> Previous</button>
                             <button class="btn btn-success" onclick="saveFeedback()">
                                 <span class="material-icons icon">save</span> Save All Feedback
                             </button>
@@ -592,7 +870,7 @@
         let authType = '';
         let success = false;
         let userId = '';
-        let currentTab = 'usability';
+        let currentTab = 'basic';
         
         // Get URL parameters
         function getUrlParams() {
@@ -614,6 +892,12 @@
                 document.getElementById('try-other-btn').onclick = function() {
                     window.location.href = 'music.html';
                 };
+                
+                // Hide music-specific sections for password
+                hideElement('music-learning-time-section');
+                hideElement('unfamiliar-music-section');
+                hideElement('shoulder-surfing-section');
+                hideElement('context-usability-section');
             }
             
             // Set result display
@@ -632,6 +916,14 @@
                         <h3>Authentication Failed</h3>
                     </div>
                 `;
+            }
+        }
+        
+        // Helper function to hide elements
+        function hideElement(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.style.display = 'none';
             }
         }
         
@@ -680,28 +972,44 @@
             // Set progress based on current tab
             let progressPercent = 0;
             
-            if (tabName === 'usability') {
+            if (tabName === 'basic') {
                 document.getElementById('step1').classList.add('active');
                 progressPercent = 0;
-            } else if (tabName === 'security') {
+            } else if (tabName === 'usability') {
                 document.getElementById('step2').classList.add('active');
                 document.getElementById('step1').classList.add('completed');
-                progressPercent = 33;
-            } else if (tabName === 'experience') {
+                progressPercent = 20;
+            } else if (tabName === 'security') {
                 document.getElementById('step3').classList.add('active');
                 document.getElementById('step1').classList.add('completed');
                 document.getElementById('step2').classList.add('completed');
-                progressPercent = 66;
-            } else if (tabName === 'scenarios') {
+                progressPercent = 40;
+            } else if (tabName === 'experience') {
                 document.getElementById('step4').classList.add('active');
                 document.getElementById('step1').classList.add('completed');
                 document.getElementById('step2').classList.add('completed');
                 document.getElementById('step3').classList.add('completed');
+                progressPercent = 60;
+            } else if (tabName === 'scenarios') {
+                document.getElementById('step5').classList.add('active');
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('step2').classList.add('completed');
+                document.getElementById('step3').classList.add('completed');
+                document.getElementById('step4').classList.add('completed');
+                progressPercent = 80;
+            } else if (tabName === 'feedback') {
+                document.getElementById('step6').classList.add('active');
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('step2').classList.add('completed');
+                document.getElementById('step3').classList.add('completed');
+                document.getElementById('step4').classList.add('completed');
+                document.getElementById('step5').classList.add('completed');
                 progressPercent = 100;
             }
             
             // Update progress bar
-            document.getElementById('progress-bar-fill').style.width = progressPercent + '%';}
+            document.getElementById('progress-bar-fill').style.width = progressPercent + '%';
+        }
         
         // Get user ID from localStorage
         function getUserId() {
@@ -721,37 +1029,89 @@
             
             // Load feedback if available
             if (testResults.feedback) {
-                // Basic fields from original form
-                document.getElementById('difficulty-rating').value = testResults.feedback.difficulty || 3;
-                document.getElementById('satisfaction-rating').value = testResults.feedback.satisfaction || 3;
-                document.getElementById('security-rating').value = testResults.feedback.security || 3;
-                document.getElementById('comments').value = testResults.feedback.comments || '';
+                // Load all available feedback fields
+                // This uses optional chaining (?.) to avoid errors if properties don't exist
                 
-                // New fields
+                // Basic info
+                if (testResults.feedback.ageGroup) document.getElementById('age-group').value = testResults.feedback.ageGroup;
+                if (testResults.feedback.gender) document.getElementById('gender').value = testResults.feedback.gender;
+                if (testResults.feedback.musicBackground) document.getElementById('music-background').value = testResults.feedback.musicBackground;
+                if (testResults.feedback.musicLearningTime) document.getElementById('music-learning-time').value = testResults.feedback.musicLearningTime;
+                
+                // Auth methods (checkboxes)
+                if (testResults.feedback.authMethods) {
+                    testResults.feedback.authMethods.forEach(method => {
+                        const checkbox = document.getElementById('auth-' + method);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
+                
+                // Usability
+                if (testResults.feedback.difficulty) document.getElementById('difficulty-rating').value = testResults.feedback.difficulty;
                 if (testResults.feedback.learning) document.getElementById('learning-rating').value = testResults.feedback.learning;
                 if (testResults.feedback.memoryBurden) document.getElementById('memory-burden-rating').value = testResults.feedback.memoryBurden;
                 if (testResults.feedback.efficiency) document.getElementById('efficiency-rating').value = testResults.feedback.efficiency;
                 if (testResults.feedback.errorRecovery) document.getElementById('error-recovery-rating').value = testResults.feedback.errorRecovery;
+                if (testResults.feedback.memoryComparison) document.getElementById('memory-comparison').value = testResults.feedback.memoryComparison;
+                if (testResults.feedback.weekLaterMusic) document.getElementById('week-later-music').value = testResults.feedback.weekLaterMusic;
+                if (testResults.feedback.weekLaterPassword) document.getElementById('week-later-password').value = testResults.feedback.weekLaterPassword;
+                
+                // Unfamiliar music
+                if (testResults.feedback.unfamiliarMusicCount) document.getElementById('unfamiliar-music-count').value = testResults.feedback.unfamiliarMusicCount;
+                if (testResults.feedback.unfamiliarMusicSuccess) document.getElementById('unfamiliar-music-success').value = testResults.feedback.unfamiliarMusicSuccess;
+                if (testResults.feedback.unfamiliarMusicDifficulty) document.getElementById('unfamiliar-music-difficulty').value = testResults.feedback.unfamiliarMusicDifficulty;
+                
+                // Security
+                if (testResults.feedback.security) document.getElementById('security-rating').value = testResults.feedback.security;
                 if (testResults.feedback.shoulderSurfing) document.getElementById('shoulder-surfing-rating').value = testResults.feedback.shoulderSurfing;
                 if (testResults.feedback.guessing) document.getElementById('guessing-rating').value = testResults.feedback.guessing;
                 if (testResults.feedback.strangerRisk) document.getElementById('stranger-rating').value = testResults.feedback.strangerRisk;
                 if (testResults.feedback.friendsRisk) document.getElementById('friends-rating').value = testResults.feedback.friendsRisk;
                 if (testResults.feedback.musicAwareRisk) document.getElementById('music-aware-rating').value = testResults.feedback.musicAwareRisk;
+                
+                // Shoulder surfing
+                if (testResults.feedback.preferPublicAuth) document.getElementById('prefer-public-auth').value = testResults.feedback.preferPublicAuth;
+                if (testResults.feedback.passwordObservationConcern) document.getElementById('password-observation-concern').value = testResults.feedback.passwordObservationConcern;
+                if (testResults.feedback.musicObservationConcern) document.getElementById('music-observation-concern').value = testResults.feedback.musicObservationConcern;
+                if (testResults.feedback.noAudioSecurity) document.getElementById('no-audio-security').value = testResults.feedback.noAudioSecurity;
+                
+                // Experience
+                if (testResults.feedback.satisfaction) document.getElementById('satisfaction-rating').value = testResults.feedback.satisfaction;
                 if (testResults.feedback.enjoyment) document.getElementById('enjoyment-rating').value = testResults.feedback.enjoyment;
                 if (testResults.feedback.recommendation) document.getElementById('recommendation-rating').value = testResults.feedback.recommendation;
                 if (testResults.feedback.longterm) document.getElementById('longterm-rating').value = testResults.feedback.longterm;
                 if (testResults.feedback.homeSuitability) document.getElementById('home-rating').value = testResults.feedback.homeSuitability;
                 if (testResults.feedback.workSuitability) document.getElementById('work-rating').value = testResults.feedback.workSuitability;
                 if (testResults.feedback.publicSuitability) document.getElementById('public-rating').value = testResults.feedback.publicSuitability;
+                
+                // Efficiency comparison
+                if (testResults.feedback.whichMoreEfficient) document.getElementById('which-more-efficient').value = testResults.feedback.whichMoreEfficient;
+                if (testResults.feedback.efficiencyReason) document.getElementById('efficiency-reason').value = testResults.feedback.efficiencyReason;
+                
+                // Context tests
+                if (testResults.feedback.noisyDifficulty) document.getElementById('noisy-difficulty').value = testResults.feedback.noisyDifficulty;
+                if (testResults.feedback.publicComfort) document.getElementById('public-comfort').value = testResults.feedback.publicComfort;
+                if (testResults.feedback.emergencyDifficulty) document.getElementById('emergency-difficulty').value = testResults.feedback.emergencyDifficulty;
+                
+                // Scenarios
                 if (testResults.feedback.dailyUse) document.getElementById('daily-use-rating').value = testResults.feedback.dailyUse;
                 if (testResults.feedback.publicConcern) document.getElementById('public-concern-rating').value = testResults.feedback.publicConcern;
                 if (testResults.feedback.emergency) document.getElementById('emergency-rating').value = testResults.feedback.emergency;
                 if (testResults.feedback.observationRisk) document.getElementById('observation-risk-rating').value = testResults.feedback.observationRisk;
+                if (testResults.feedback.cognitiveLoad) document.getElementById('cognitive-load-rating').value = testResults.feedback.cognitiveLoad;
                 
-                // Radio buttons for preference
+                // Preference (radio)
                 if (testResults.feedback.preference) {
-                    document.querySelector(`input[name="preference"][value="${testResults.feedback.preference}"]`).checked = true;
+                    const radioButton = document.getElementById('prefer-' + testResults.feedback.preference);
+                    if (radioButton) radioButton.checked = true;
                 }
+                
+                // Additional feedback
+                if (testResults.feedback.musicFamiliarCount) document.getElementById('music-familiar-count').value = testResults.feedback.musicFamiliarCount;
+                if (testResults.feedback.musicAdvantages) document.getElementById('music-advantages').value = testResults.feedback.musicAdvantages;
+                if (testResults.feedback.musicDisadvantages) document.getElementById('music-disadvantages').value = testResults.feedback.musicDisadvantages;
+                if (testResults.feedback.musicImprovements) document.getElementById('music-improvements').value = testResults.feedback.musicImprovements;
+                if (testResults.feedback.comments) document.getElementById('comments').value = testResults.feedback.comments;
             }
             
             // Display results based on auth type
@@ -810,26 +1170,49 @@
         function saveFeedback() {
             // Collect all feedback data
             const feedbackData = {
-                // Original fields
-                difficulty: document.getElementById('difficulty-rating').value,
-                satisfaction: document.getElementById('satisfaction-rating').value,
-                security: document.getElementById('security-rating').value,
-                comments: document.getElementById('comments').value,
+                // Timestamp
+                timestamp: new Date().toISOString(),
                 
-                // New usability fields
+                // Basic info
+                ageGroup: document.getElementById('age-group').value,
+                gender: document.getElementById('gender').value,
+                musicBackground: document.getElementById('music-background').value,
+                musicLearningTime: document.getElementById('music-learning-time').value,
+                
+                // Auth methods (collect checked boxes)
+                authMethods: Array.from(document.querySelectorAll('input[name="auth-methods"]:checked')).map(cb => cb.value),
+                
+                // Usability
+                difficulty: document.getElementById('difficulty-rating').value,
                 learning: document.getElementById('learning-rating').value,
                 memoryBurden: document.getElementById('memory-burden-rating').value,
                 efficiency: document.getElementById('efficiency-rating').value,
                 errorRecovery: document.getElementById('error-recovery-rating').value,
+                memoryComparison: document.getElementById('memory-comparison').value,
+                weekLaterMusic: document.getElementById('week-later-music').value,
+                weekLaterPassword: document.getElementById('week-later-password').value,
                 
-                // New security fields
+                // Unfamiliar music
+                unfamiliarMusicCount: document.getElementById('unfamiliar-music-count').value,
+                unfamiliarMusicSuccess: document.getElementById('unfamiliar-music-success').value,
+                unfamiliarMusicDifficulty: document.getElementById('unfamiliar-music-difficulty').value,
+                
+                // Security
+                security: document.getElementById('security-rating').value,
                 shoulderSurfing: document.getElementById('shoulder-surfing-rating').value,
                 guessing: document.getElementById('guessing-rating').value,
                 strangerRisk: document.getElementById('stranger-rating').value,
                 friendsRisk: document.getElementById('friends-rating').value,
                 musicAwareRisk: document.getElementById('music-aware-rating').value,
                 
-                // New user experience fields
+                // Shoulder surfing
+                preferPublicAuth: document.getElementById('prefer-public-auth').value,
+                passwordObservationConcern: document.getElementById('password-observation-concern').value,
+                musicObservationConcern: document.getElementById('music-observation-concern').value,
+                noAudioSecurity: document.getElementById('no-audio-security').value,
+                
+                // Experience
+                satisfaction: document.getElementById('satisfaction-rating').value,
                 enjoyment: document.getElementById('enjoyment-rating').value,
                 recommendation: document.getElementById('recommendation-rating').value,
                 longterm: document.getElementById('longterm-rating').value,
@@ -837,17 +1220,31 @@
                 workSuitability: document.getElementById('work-rating').value,
                 publicSuitability: document.getElementById('public-rating').value,
                 
-                // Scenario fields
+                // Efficiency comparison
+                whichMoreEfficient: document.getElementById('which-more-efficient').value,
+                efficiencyReason: document.getElementById('efficiency-reason').value,
+                
+                // Context tests
+                noisyDifficulty: document.getElementById('noisy-difficulty').value,
+                publicComfort: document.getElementById('public-comfort').value,
+                emergencyDifficulty: document.getElementById('emergency-difficulty').value,
+                
+                // Scenarios
                 dailyUse: document.getElementById('daily-use-rating').value,
                 publicConcern: document.getElementById('public-concern-rating').value,
                 emergency: document.getElementById('emergency-rating').value,
                 observationRisk: document.getElementById('observation-risk-rating').value,
+                cognitiveLoad: document.getElementById('cognitive-load-rating').value,
                 
                 // Overall preference
                 preference: document.querySelector('input[name="preference"]:checked')?.value || 'neutral',
                 
-                // Timestamp
-                timestamp: new Date().toISOString()
+                // Additional feedback
+                musicFamiliarCount: document.getElementById('music-familiar-count').value,
+                musicAdvantages: document.getElementById('music-advantages').value,
+                musicDisadvantages: document.getElementById('music-disadvantages').value,
+                musicImprovements: document.getElementById('music-improvements').value,
+                comments: document.getElementById('comments').value,
             };
             
             // Save to localStorage
@@ -956,40 +1353,92 @@
         function formatFeedbackResults(feedback) {
             let feedbackText = "";
             
+            // Basic Information
+            feedbackText += "BASIC INFORMATION:\n";
+            feedbackText += `Age Group: ${feedback.ageGroup || 'Not provided'}\n`;
+            feedbackText += `Gender: ${feedback.gender || 'Not provided'}\n`;
+            feedbackText += `Music Background: ${feedback.musicBackground || 'Not provided'}\n`;
+            feedbackText += `Music Learning Time: ${feedback.musicLearningTime || 'Not provided'} minutes\n`;
+            feedbackText += `Authentication Methods Used: ${(feedback.authMethods || []).join(', ') || 'None selected'}\n\n`;
+            
             // Usability section
             feedbackText += "USABILITY:\n";
-            feedbackText += `Difficulty Rating (1-5): ${feedback.difficulty}\n`;
-            feedbackText += `Learning Difficulty (1-5): ${feedback.learning}\n`;
-            feedbackText += `Memory Burden (1-5): ${feedback.memoryBurden}\n`;
-            feedbackText += `Operational Efficiency (1-5): ${feedback.efficiency}\n`;
-            feedbackText += `Error Recovery (1-5): ${feedback.errorRecovery}\n\n`;
+            feedbackText += `Difficulty Rating (1-5): ${feedback.difficulty || 'Not provided'}\n`;
+            feedbackText += `Learning Difficulty (1-5): ${feedback.learning || 'Not provided'}\n`;
+            feedbackText += `Memory Burden (1-5): ${feedback.memoryBurden || 'Not provided'}\n`;
+            feedbackText += `Operational Efficiency (1-5): ${feedback.efficiency || 'Not provided'}\n`;
+            feedbackText += `Error Recovery (1-5): ${feedback.errorRecovery || 'Not provided'}\n`;
+            feedbackText += `Music vs Password Memory Ease (1-5): ${feedback.memoryComparison || 'Not provided'}\n`;
+            feedbackText += `Music Recall After a Week (1-5): ${feedback.weekLaterMusic || 'Not provided'}\n`;
+            feedbackText += `Password Recall After a Week (1-5): ${feedback.weekLaterPassword || 'Not provided'}\n`;
+            
+            // Unfamiliar Music (if applicable)
+            if (feedback.unfamiliarMusicCount !== undefined || feedback.unfamiliarMusicSuccess !== undefined) {
+                feedbackText += `Unfamiliar Music Count: ${feedback.unfamiliarMusicCount || 'Not provided'}\n`;
+                feedbackText += `Unfamiliar Music Success: ${feedback.unfamiliarMusicSuccess || 'Not provided'}\n`;
+                feedbackText += `Unfamiliar Music Difficulty (1-5): ${feedback.unfamiliarMusicDifficulty || 'Not provided'}\n`;
+            }
+            feedbackText += '\n';
             
             // Security section
             feedbackText += "SECURITY:\n";
-            feedbackText += `Overall Security (1-5): ${feedback.security}\n`;
-            feedbackText += `Resistance to Observation (1-5): ${feedback.shoulderSurfing}\n`;
-            feedbackText += `Resistance to Guessing (1-5): ${feedback.guessing}\n`;
-            feedbackText += `Likelihood of Break by Strangers (1-5): ${feedback.strangerRisk}\n`;
-            feedbackText += `Likelihood of Break by Friends (1-5): ${feedback.friendsRisk}\n`;
-            feedbackText += `Likelihood of Break by Music-aware People (1-5): ${feedback.musicAwareRisk}\n\n`;
+            feedbackText += `Overall Security (1-5): ${feedback.security || 'Not provided'}\n`;
+            feedbackText += `Resistance to Observation (1-5): ${feedback.shoulderSurfing || 'Not provided'}\n`;
+            feedbackText += `Resistance to Guessing (1-5): ${feedback.guessing || 'Not provided'}\n`;
+            feedbackText += `Likelihood of Break by Strangers (1-5): ${feedback.strangerRisk || 'Not provided'}\n`;
+            feedbackText += `Likelihood of Break by Friends (1-5): ${feedback.friendsRisk || 'Not provided'}\n`;
+            feedbackText += `Likelihood of Break by Music-aware People (1-5): ${feedback.musicAwareRisk || 'Not provided'}\n`;
+            
+            // Shoulder Surfing (if applicable)
+            if (feedback.preferPublicAuth !== undefined || feedback.passwordObservationConcern !== undefined) {
+                feedbackText += `Preferred Authentication in Public: ${feedback.preferPublicAuth || 'Not provided'}\n`;
+                feedbackText += `Password Observation Concern (1-5): ${feedback.passwordObservationConcern || 'Not provided'}\n`;
+                feedbackText += `Music Observation Concern (1-5): ${feedback.musicObservationConcern || 'Not provided'}\n`;
+                feedbackText += `Screen-Only (No Audio) Security (1-5): ${feedback.noAudioSecurity || 'Not provided'}\n`;
+            }
+            feedbackText += '\n';
             
             // User Experience section
             feedbackText += "USER EXPERIENCE:\n";
-            feedbackText += `Overall Satisfaction (1-5): ${feedback.satisfaction}\n`;
-            feedbackText += `Enjoyment (1-5): ${feedback.enjoyment}\n`;
-            feedbackText += `Recommendation Likelihood (1-5): ${feedback.recommendation}\n`;
-            feedbackText += `Long-term Use Willingness (1-5): ${feedback.longterm}\n`;
-            feedbackText += `Suitability for Home Devices (1-5): ${feedback.homeSuitability}\n`;
-            feedbackText += `Suitability for Work Devices (1-5): ${feedback.workSuitability}\n`;
-            feedbackText += `Suitability for Public Places (1-5): ${feedback.publicSuitability}\n\n`;
+            feedbackText += `Overall Satisfaction (1-5): ${feedback.satisfaction || 'Not provided'}\n`;
+            feedbackText += `Enjoyment (1-5): ${feedback.enjoyment || 'Not provided'}\n`;
+            feedbackText += `Recommendation Likelihood (1-5): ${feedback.recommendation || 'Not provided'}\n`;
+            feedbackText += `Long-term Use Willingness (1-5): ${feedback.longterm || 'Not provided'}\n`;
+            feedbackText += `Suitability for Home Devices (1-5): ${feedback.homeSuitability || 'Not provided'}\n`;
+            feedbackText += `Suitability for Work Devices (1-5): ${feedback.workSuitability || 'Not provided'}\n`;
+            feedbackText += `Suitability for Public Places (1-5): ${feedback.publicSuitability || 'Not provided'}\n`;
+            
+            // Efficiency Comparison
+            if (feedback.whichMoreEfficient !== undefined) {
+                feedbackText += `More Efficient Method: ${feedback.whichMoreEfficient || 'Not provided'}\n`;
+                feedbackText += `Efficiency Reason: ${feedback.efficiencyReason || 'Not provided'}\n`;
+            }
+            
+            // Context Usability (if applicable)
+            if (feedback.noisyDifficulty !== undefined || feedback.publicComfort !== undefined) {
+                feedbackText += `Noisy Environment Difficulty (1-5): ${feedback.noisyDifficulty || 'Not provided'}\n`;
+                feedbackText += `Public Environment Comfort (1-5): ${feedback.publicComfort || 'Not provided'}\n`;
+                feedbackText += `Emergency Situation Difficulty (1-5): ${feedback.emergencyDifficulty || 'Not provided'}\n`;
+            }
+            feedbackText += '\n';
             
             // Scenarios section
             feedbackText += "SCENARIOS:\n";
-            feedbackText += `Daily Use Rating (1-5): ${feedback.dailyUse}\n`;
-            feedbackText += `Public Place Concern (1-5): ${feedback.publicConcern}\n`;
-            feedbackText += `Emergency Reliability (1-5): ${feedback.emergency}\n`;
-            feedbackText += `Observation Attack Risk (1-5): ${feedback.observationRisk}\n`;
-            feedbackText += `Overall Preference: ${feedback.preference}\n\n`;
+            feedbackText += `Daily Use Rating (1-5): ${feedback.dailyUse || 'Not provided'}\n`;
+            feedbackText += `Public Place Concern (1-5): ${feedback.publicConcern || 'Not provided'}\n`;
+            feedbackText += `Emergency Reliability (1-5): ${feedback.emergency || 'Not provided'}\n`;
+            feedbackText += `Observation Attack Risk (1-5): ${feedback.observationRisk || 'Not provided'}\n`;
+            feedbackText += `Cognitive Load Comparison (1-5): ${feedback.cognitiveLoad || 'Not provided'}\n`;
+            feedbackText += `Overall Preference: ${feedback.preference || 'Not provided'}\n\n`;
+            
+            // Additional Feedback
+            feedbackText += "ADDITIONAL FEEDBACK:\n";
+            if (feedback.musicFamiliarCount !== undefined && feedback.musicFamiliarCount !== 'na') {
+                feedbackText += `Familiar Songs in Random Selection: ${feedback.musicFamiliarCount || 'Not provided'}\n`;
+            }
+            feedbackText += `Music Authentication Advantages: ${feedback.musicAdvantages || 'Not provided'}\n`;
+            feedbackText += `Music Authentication Disadvantages: ${feedback.musicDisadvantages || 'Not provided'}\n`;
+            feedbackText += `Suggested Improvements: ${feedback.musicImprovements || 'Not provided'}\n`;
             
             // Comments
             feedbackText += "COMMENTS:\n";
