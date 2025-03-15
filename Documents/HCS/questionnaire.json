@@ -1,0 +1,55 @@
+{
+    "basicInfo": {
+      "title": "Basic Information",
+      "questions": [
+        {
+          "id": "age-group",
+          "type": "select",
+          "label": "Age Group:",
+          "options": [
+            {"value": "18-24", "text": "18-24 years"},
+            {"value": "25-34", "text": "25-34 years"},
+            {"value": "35-44", "text": "35-44 years"},
+            {"value": "45-54", "text": "45-54 years"},
+            {"value": "55+", "text": "55 years and above"},
+            {"value": "prefer-not-to-say", "text": "Prefer not to say"}
+          ]
+        },
+        {
+          "id": "gender",
+          "type": "select",
+          "label": "Gender:",
+          "options": [
+            {"value": "male", "text": "Male"},
+            {"value": "female", "text": "Female"},
+            {"value": "other", "text": "Other"},
+            {"value": "prefer-not-to-say", "text": "Prefer not to say"}
+          ]
+        }
+      ]
+    },
+    "usability": {
+      "title": "Usability Assessment",
+      "questions": [
+        {
+          "id": "difficulty-rating",
+          "type": "select",
+          "label": "Overall Difficulty (1-5):",
+          "options": [
+            {"value": "1", "text": "1 - Very Easy"},
+            {"value": "2", "text": "2 - Easy"},
+            {"value": "3", "text": "3 - Moderate", "selected": true},
+            {"value": "4", "text": "4 - Difficult"},
+            {"value": "5", "text": "5 - Very Difficult"}
+          ]
+        },
+        {
+          "id": "comments",
+          "type": "textarea",
+          "label": "Any other comments:",
+          "rows": 3,
+          "placeholder": "Please share any additional thoughts..."
+        }
+      ]
+    }
+  }
