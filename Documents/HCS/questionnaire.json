@@ -25,16 +25,47 @@
             {"value": "other", "text": "Other"},
             {"value": "prefer-not-to-say", "text": "Prefer not to say"}
           ]
+        },
+        {
+          "id": "music-background",
+          "type": "select",
+          "label": "Your Music Background:",
+          "options": [
+            {"value": "professional", "text": "Professional Musician/Music Enthusiast"},
+            {"value": "regular", "text": "Listen to Music Regularly"},
+            {"value": "occasional", "text": "Listen to Music Occasionally"},
+            {"value": "rarely", "text": "Rarely Listen to Music"}
+          ]
+        },
+        {
+          "id": "auth-methods",
+          "type": "checkbox",
+          "label": "Authentication Methods You Usually Use (Check all that apply):",
+          "options": [
+            {"id": "auth-password", "value": "password", "text": "Alphanumeric Passwords"},
+            {"id": "auth-pin", "value": "pin", "text": "PIN Codes"},
+            {"id": "auth-pattern", "value": "pattern", "text": "Pattern/Graphic Passwords"},
+            {"id": "auth-fingerprint", "value": "fingerprint", "text": "Fingerprint Recognition"},
+            {"id": "auth-face", "value": "face", "text": "Face Recognition"},
+            {"id": "auth-other", "value": "other", "text": "Other"}
+          ]
         }
       ]
     },
-    "usability": {
-      "title": "Usability Assessment",
+    "musicAuthExperience": {
+      "title": "Music Authentication Experience",
       "questions": [
+        {
+          "id": "music-learning-time",
+          "type": "number",
+          "label": "How many minutes did you spend learning the music authentication system?",
+          "min": 0,
+          "max": 60
+        },
         {
           "id": "difficulty-rating",
           "type": "select",
-          "label": "Overall Difficulty (1-5):",
+          "label": "Overall Difficulty of Using Music Authentication:",
           "options": [
             {"value": "1", "text": "1 - Very Easy"},
             {"value": "2", "text": "2 - Easy"},
@@ -44,11 +75,322 @@
           ]
         },
         {
-          "id": "comments",
+          "id": "memory-burden-rating",
+          "type": "select",
+          "label": "Memory Burden for Music Authentication:",
+          "options": [
+            {"value": "1", "text": "1 - Very Low Memory Burden"},
+            {"value": "2", "text": "2 - Low Memory Burden"},
+            {"value": "3", "text": "3 - Moderate", "selected": true},
+            {"value": "4", "text": "4 - High Memory Burden"},
+            {"value": "5", "text": "5 - Very High Memory Burden"}
+          ]
+        },
+        {
+          "id": "memory-comparison",
+          "type": "select",
+          "label": "Compared to remembering passwords, remembering music selections is:",
+          "options": [
+            {"value": "1", "text": "1 - Much Easier"},
+            {"value": "2", "text": "2 - Somewhat Easier"},
+            {"value": "3", "text": "3 - About the Same", "selected": true},
+            {"value": "4", "text": "4 - Somewhat Harder"},
+            {"value": "5", "text": "5 - Much Harder"}
+          ]
+        },
+        {
+          "id": "week-later-memory",
+          "type": "select",
+          "label": "If you used this system again in a week, how likely would you be to remember your music selections?",
+          "options": [
+            {"value": "1", "text": "1 - Very Unlikely"},
+            {"value": "2", "text": "2 - Somewhat Unlikely"},
+            {"value": "3", "text": "3 - Not Sure", "selected": true},
+            {"value": "4", "text": "4 - Somewhat Likely"},
+            {"value": "5", "text": "5 - Very Likely"}
+          ]
+        }
+      ]
+    },
+    "musicCognition": {
+      "title": "Music Cognition Range",
+      "questions": [
+        {
+          "id": "familiar-music-count",
+          "type": "number",
+          "label": "How many familiar songs were you able to successfully identify?",
+          "min": 0,
+          "max": 5
+        },
+        {
+          "id": "one-second-difficulty",
+          "type": "select",
+          "label": "How difficult was it to identify familiar music with 1-second audio clips?",
+          "options": [
+            {"value": "1", "text": "1 - Very Easy"},
+            {"value": "2", "text": "2 - Easy"},
+            {"value": "3", "text": "3 - Moderate", "selected": true},
+            {"value": "4", "text": "4 - Difficult"},
+            {"value": "5", "text": "5 - Very Difficult"}
+          ]
+        },
+        {
+          "id": "three-second-difficulty",
+          "type": "select",
+          "label": "How difficult was it to identify familiar music with 3-second audio clips?",
+          "options": [
+            {"value": "1", "text": "1 - Very Easy"},
+            {"value": "2", "text": "2 - Easy"},
+            {"value": "3", "text": "3 - Moderate", "selected": true},
+            {"value": "4", "text": "4 - Difficult"},
+            {"value": "5", "text": "5 - Very Difficult"}
+          ]
+        },
+        {
+          "id": "unfamiliar-music-count",
+          "type": "number",
+          "label": "How many unfamiliar songs were you able to successfully identify?",
+          "min": 0,
+          "max": 5
+        },
+        {
+          "id": "unfamiliar-accuracy",
+          "type": "select",
+          "label": "After learning new music, how would you rate your accuracy in identifying it?",
+          "options": [
+            {"value": "1", "text": "1 - Very Poor"},
+            {"value": "2", "text": "2 - Poor"},
+            {"value": "3", "text": "3 - Average", "selected": true},
+            {"value": "4", "text": "4 - Good"},
+            {"value": "5", "text": "5 - Excellent"}
+          ]
+        }
+      ]
+    },
+    "securityAssessment": {
+      "title": "Security Assessment",
+      "questions": [
+        {
+          "id": "security-rating",
+          "type": "select",
+          "label": "Overall Security of Music Authentication:",
+          "options": [
+            {"value": "1", "text": "1 - Very Insecure"},
+            {"value": "2", "text": "2 - Somewhat Insecure"},
+            {"value": "3", "text": "3 - Neutral", "selected": true},
+            {"value": "4", "text": "4 - Somewhat Secure"},
+            {"value": "5", "text": "5 - Very Secure"}
+          ]
+        },
+        {
+          "id": "shoulder-surfing-rating",
+          "type": "select",
+          "label": "Resistance to 'Shoulder Surfing' (someone watching over your shoulder as you authenticate):",
+          "options": [
+            {"value": "1", "text": "1 - Very Easy to Observe"},
+            {"value": "2", "text": "2 - Easy to Observe"},
+            {"value": "3", "text": "3 - Moderate", "selected": true},
+            {"value": "4", "text": "4 - Difficult to Observe"},
+            {"value": "5", "text": "5 - Very Difficult to Observe"}
+          ]
+        },
+        {
+          "id": "guessing-rating",
+          "type": "select",
+          "label": "How likely could someone guess or crack your music authentication?",
+          "options": [
+            {"value": "1", "text": "1 - Very Likely"},
+            {"value": "2", "text": "2 - Somewhat Likely"},
+            {"value": "3", "text": "3 - Neutral", "selected": true},
+            {"value": "4", "text": "4 - Somewhat Unlikely"},
+            {"value": "5", "text": "5 - Very Unlikely"}
+          ]
+        },
+        {
+          "id": "no-audio-security",
+          "type": "select",
+          "label": "If someone can observe your screen but cannot hear the audio, how likely could they successfully replicate your music authentication?",
+          "options": [
+            {"value": "1", "text": "1 - Very Unlikely"},
+            {"value": "2", "text": "2 - Somewhat Unlikely"},
+            {"value": "3", "text": "3 - Neutral", "selected": true},
+            {"value": "4", "text": "4 - Somewhat Likely"},
+            {"value": "5", "text": "5 - Very Likely"}
+          ]
+        }
+      ]
+    },
+    "environmentalAdaptability": {
+      "title": "Environmental Adaptability",
+      "questions": [
+        {
+          "id": "noisy-difficulty",
+          "type": "select",
+          "label": "How difficult was authentication in a noisy environment?",
+          "options": [
+            {"value": "1", "text": "1 - Very Easy"},
+            {"value": "2", "text": "2 - Easy"},
+            {"value": "3", "text": "3 - Moderate", "selected": true},
+            {"value": "4", "text": "4 - Difficult"},
+            {"value": "5", "text": "5 - Very Difficult"}
+          ]
+        },
+        {
+          "id": "public-comfort",
+          "type": "select",
+          "label": "How comfortable were you using the music authentication system in a public environment?",
+          "options": [
+            {"value": "1", "text": "1 - Very Uncomfortable"},
+            {"value": "2", "text": "2 - Uncomfortable"},
+            {"value": "3", "text": "3 - Neutral", "selected": true},
+            {"value": "4", "text": "4 - Comfortable"},
+            {"value": "5", "text": "5 - Very Comfortable"}
+          ]
+        },
+        {
+          "id": "emergency-reliability",
+          "type": "select",
+          "label": "How reliable was the music authentication system when used under time pressure?",
+          "options": [
+            {"value": "1", "text": "1 - Very Unreliable"},
+            {"value": "2", "text": "2 - Somewhat Unreliable"},
+            {"value": "3", "text": "3 - Neutral", "selected": true},
+            {"value": "4", "text": "4 - Somewhat Reliable"},
+            {"value": "5", "text": "5 - Very Reliable"}
+          ]
+        }
+      ]
+    },
+    "comparison": {
+      "title": "Comparison and Feedback",
+      "questions": [
+        {
+          "id": "speed-comparison",
+          "type": "select",
+          "label": "Compared to traditional passwords, music authentication is:",
+          "options": [
+            {"value": "1", "text": "1 - Much Slower"},
+            {"value": "2", "text": "2 - Somewhat Slower"},
+            {"value": "3", "text": "3 - About the Same Speed", "selected": true},
+            {"value": "4", "text": "4 - Somewhat Faster"},
+            {"value": "5", "text": "5 - Much Faster"}
+          ]
+        },
+        {
+          "id": "error-prone",
+          "type": "select",
+          "label": "Which authentication method do you find more error-prone?",
+          "options": [
+            {"value": "music", "text": "Music Authentication"},
+            {"value": "password", "text": "Password Authentication"},
+            {"value": "same", "text": "About the Same", "selected": true}
+          ]
+        },
+        {
+          "id": "enjoyment",
+          "type": "select",
+          "label": "Which authentication method do you find more enjoyable?",
+          "options": [
+            {"value": "music", "text": "Music Authentication"},
+            {"value": "password", "text": "Password Authentication"},
+            {"value": "same", "text": "About the Same", "selected": true}
+          ]
+        },
+        {
+          "id": "preference",
+          "type": "select",
+          "label": "If you could choose, which authentication method would you prefer to use?",
+          "options": [
+            {"value": "music", "text": "Music Authentication"},
+            {"value": "password", "text": "Password Authentication"},
+            {"value": "same", "text": "No Strong Preference", "selected": true}
+          ]
+        }
+      ]
+    },
+    "twoFactorAuth": {
+      "title": "Personalized Authentication & Two-Factor Authentication",
+      "questions": [
+        {
+          "id": "personal-skill-relevance",
+          "type": "select",
+          "label": "Do you think using personal skills (like music recognition ability) as an authentication factor is meaningful?",
+          "options": [
+            {"value": "1", "text": "1 - Not at All Meaningful"},
+            {"value": "2", "text": "2 - Slightly Meaningful"},
+            {"value": "3", "text": "3 - Moderately Meaningful", "selected": true},
+            {"value": "4", "text": "4 - Very Meaningful"},
+            {"value": "5", "text": "5 - Extremely Meaningful"}
+          ]
+        },
+        {
+          "id": "2fa-security",
+          "type": "select",
+          "label": "If music authentication was combined with passwords as two-step verification, would this increase security?",
+          "options": [
+            {"value": "1", "text": "1 - Would Not Increase Security"},
+            {"value": "2", "text": "2 - Slight Security Increase"},
+            {"value": "3", "text": "3 - Moderate Security Increase", "selected": true},
+            {"value": "4", "text": "4 - Significant Security Increase"},
+            {"value": "5", "text": "5 - Major Security Increase"}
+          ]
+        },
+        {
+          "id": "2fa-impact",
+          "type": "select",
+          "label": "How much would combining music and password authentication impact your user experience?",
+          "options": [
+            {"value": "1", "text": "1 - Very Negative Impact"},
+            {"value": "2", "text": "2 - Somewhat Negative Impact"},
+            {"value": "3", "text": "3 - Neutral Impact", "selected": true},
+            {"value": "4", "text": "4 - Somewhat Positive Impact"},
+            {"value": "5", "text": "5 - Very Positive Impact"}
+          ]
+        },
+        {
+          "id": "time-security-tradeoff",
+          "type": "select",
+          "label": "Would you be willing to spend extra time to authenticate for increased security?",
+          "options": [
+            {"value": "1", "text": "1 - Definitely Not"},
+            {"value": "2", "text": "2 - Probably Not"},
+            {"value": "3", "text": "3 - Might or Might Not", "selected": true},
+            {"value": "4", "text": "4 - Probably Yes"},
+            {"value": "5", "text": "5 - Definitely Yes"}
+          ]
+        },
+        {
+          "id": "suitable-scenarios",
+          "type": "checkbox",
+          "label": "For which types of systems or scenarios would this skill-based authentication be suitable? (Check all that apply)",
+          "options": [
+            {"id": "scenario-personal", "value": "personal", "text": "Personal devices (phones, laptops)"},
+            {"id": "scenario-financial", "value": "financial", "text": "Banking/Financial accounts"},
+            {"id": "scenario-work", "value": "work", "text": "Work-related systems"},
+            {"id": "scenario-cloud", "value": "cloud", "text": "Cloud storage"},
+            {"id": "scenario-health", "value": "health", "text": "Healthcare systems"},
+            {"id": "scenario-government", "value": "government", "text": "Government services"},
+            {"id": "scenario-none", "value": "none", "text": "None - not suitable for any system"}
+          ]
+        },
+        {
+          "id": "high-security-usage",
+          "type": "select",
+          "label": "Would you consider using this type of authentication for high-security accounts?",
+          "options": [
+            {"value": "1", "text": "1 - Definitely Not"},
+            {"value": "2", "text": "2 - Probably Not"},
+            {"value": "3", "text": "3 - Might or Might Not", "selected": true},
+            {"value": "4", "text": "4 - Probably Yes"},
+            {"value": "5", "text": "5 - Definitely Yes"}
+          ]
+        },
+        {
+          "id": "additional-comments",
           "type": "textarea",
-          "label": "Any other comments:",
-          "rows": 3,
-          "placeholder": "Please share any additional thoughts..."
+          "label": "Do you have any additional comments or suggestions about the music authentication system?",
+          "rows": 4,
+          "placeholder": "Please share any other thoughts or feedback about the authentication system..."
         }
       ]
     }
