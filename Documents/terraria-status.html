@@ -466,8 +466,14 @@
         }
         
         // 可以从状态历史中提取其他信息，如网络模式等
-        // 这里仅作示例
         document.getElementById('networkMode').textContent = 'Steam';
+      }
+      
+      // 处理下次计划重启信息
+      if (currentStatus.nextScheduledRestart) {
+        const restartTime = new Date(currentStatus.nextScheduledRestart);
+        document.getElementById('nextRestartTime').textContent = restartTime.toLocaleString();
+      } else {
         document.getElementById('nextRestartTime').textContent = '未计划';
       }
       
